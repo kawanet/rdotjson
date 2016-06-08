@@ -26,15 +26,9 @@ rdotjson app/src/main/res/values/*.xml > r.json
 rdotjson app/src/production/res/values/*.xml > r_production.json
 
 rdotjson app/src/develop/res/values/*.xml > r_develop.json
+
+rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 ```
-
-### CLI OPTIONS
-
-`--space=2` - JSON indent. number of white spaces for readability purposes. default: 2
-
-`--output=R.json` - output to the file `R.json`. default: STDOUT
-
-`-` - input XML from STDIN
 
 ### JSON USAGE
 
@@ -43,6 +37,22 @@ var R = require("./r.json");
 
 console.warn(R.string.error_message);
 ```
+
+### CLI OPTIONS
+
+`--space=2` - JSON indent. default: 2
+
+`--format=json` - Output format. default: json
+
+`--output=R.json` - Output filename. default: STDOUT
+
+`-` - Input XML from STDIN
+
+### CLI OUTPUT FORMATS
+
+`--format=json --output=R.json` - JSON
+`--format=csv --output=R.csv` - CSV
+`--format=rdotswift --output=R.swift` - SWIFT ([rdotswift](https://github.com/kawanet/rdotswift) module required)
 
 ## INSTALL
 

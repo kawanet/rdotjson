@@ -37,6 +37,6 @@
   },
   "scripts": {
     "fixpack": "fixpack",
-    "test": "./node_modules/.bin/jshint *.js *.json"
+    "test": "./node_modules/.bin/jshint *.js *.json format/*.js"
   }
 }

@@ -1,0 +1,42 @@
+{
+  "name": "rdotjson",
+  "description": "Android String Resource XML Parser",
+  "version": "0.0.1",
+  "author": "@kawanet",
+  "bin": {
+    "rdotjson": "./rdotjson.cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/kawanet/rdotjson/issues"
+  },
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "process.argv": "kawanet/process.argv"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.2"
+  },
+  "homepage": "https://github.com/kawanet/rdotjson#readme",
+  "jshintConfig": {
+    "eqnull": true,
+    "node": true,
+    "undef": true
+  },
+  "keywords": [
+    "Android",
+    "JSON",
+    "Java",
+    "R",
+    "XML"
+  ],
+  "license": "MIT",
+  "main": "./rdotjson.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kawanet/rdotjson.git"
+  },
+  "scripts": {
+    "fixpack": "fixpack",
+    "test": "./node_modules/.bin/jshint *.js *.json"
+  }
+}

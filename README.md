@@ -51,7 +51,9 @@ console.warn(R.string.error_message);
 ### CLI OUTPUT FORMATS
 
 `--format=json --output=R.json` - JSON
+
 `--format=csv --output=R.csv` - CSV
+
 `--format=rdotswift --output=R.swift` - SWIFT ([rdotswift](https://github.com/kawanet/rdotswift) module required)
 
 ## INSTALL

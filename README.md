@@ -8,7 +8,9 @@ Android String Resource XML Parser
 var fs = require("fs");
 var rdotjson = require("rdotjson");
 
-rdotjson(fs.createReadStream("strings.xml"), function (err, R) {
+var xml = fs.readFileSync("strings.xml");
+
+rdotjson(xml, function (err, R) {
   if (err) throw err;
   console.log(R.string.welcome);
 });
@@ -34,7 +36,7 @@ rdotjson app/src/develop/res/values/*.xml > r_develop.json
 
 `-` - input XML from STDIN
 
-### USAGE
+### JSON USAGE
 
 ```js
 var R = require("./r.json");

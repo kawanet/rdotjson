@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "cheerio": "^0.20.0",
-    "process.argv": "kawanet/process.argv"
+    "is-stream": "^1.1.0",
+    "process.argv": "^0.1.0"
   },
   "devDependencies": {
     "jshint": "^2.9.2"

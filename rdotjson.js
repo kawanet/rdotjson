@@ -1,6 +1,7 @@
 // rtojson.js
 
 var cheerio = require("cheerio");
+var isReadableStream = require("is-stream").readable;
 
 module.exports = rtojson;
 
@@ -70,8 +71,4 @@ function readFromStream(stream, callback) {
     if (callback) callback(err);
     callback = null;
   }
-}
-
-function isReadableStream(stream) {
-  return ("object" === typeof stream) && ("function" === typeof stream._read) && ("object" === typeof stream._readableState);
 }

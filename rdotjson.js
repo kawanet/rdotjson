@@ -5,7 +5,8 @@ var isReadableStream = require("is-stream").readable;
 var readFromStream = require("./gist/read-from-stream");
 var regexpForWildcard = require("./gist/regexp-for-wildcard");
 
-module.exports = rtojson;
+var exports = module.exports = rtojson;
+exports.format = format;
 
 /**
  * parse resource XML
@@ -52,4 +53,22 @@ function rtojson(xml, options, callback) {
   });
 
   if (callback) return callback(null, R);
+}
+
+/**
+ * Find format function
+ *
+ * @param name {String}
+ * @returns {Function} format function
+ */
+
+function format(name) {
+  var func;
+  try {
+    func = require("./format/" + name).format;
+  } catch (e) {
+    // ignore
+  }
+  if (func) return func;
+  return require(name).format;
 }

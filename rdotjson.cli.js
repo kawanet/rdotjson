@@ -38,19 +38,8 @@ function main() {
     var isSTDOUT = (output === "-");
     console.warn("writing: " + (isSTDOUT ? "(stdout)" : output));
     var out = isSTDOUT ? process.stdout : fs.createWriteStream(output);
-    var mod = load(options.format || "json");
-    out.write(mod.format(R, options));
+    var format = rdotjson.format(options.format || "json");
+    out.write(format(R, options));
     if (!isSTDOUT) out.end();
   }
-}
-
-function load(name) {
-  var mod;
-  try {
-    mod = require("./format/" + name);
-  } catch (e) {
-    // ignore
-  }
-  if (mod) return mod;
-  return require(name);
 }

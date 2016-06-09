@@ -17,8 +17,8 @@ function regexpForWildcard(str, opt) {
 function regexp(str) {
   str += "";
   str = str.replace(/([!-/:-@\[-`\{-~])/g, "\\$1");
-  str = str.replace(/(\\\*)+/, ".*");
-  str = str.replace(/\\\?/, ".");
+  str = str.replace(/(\\\*)+/g, ".*");
+  str = str.replace(/\\\?/g, ".");
   return str;
 }
 

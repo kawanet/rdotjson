@@ -2,6 +2,7 @@
 
 var cheerio = require("cheerio");
 var isReadableStream = require("is-stream").readable;
+var readFromStream = require("./gist/read-from-stream");
 
 module.exports = rtojson;
 
@@ -49,26 +50,5 @@ function rtojson(xml, options, callback) {
     });
 
     if (callback) return callback(null, R);
-  }
-}
-
-function readFromStream(stream, callback) {
-  var buf = [];
-  stream.on("data", onData);
-  stream.on("end", onEnd);
-  stream.on("error", onError);
-
-  function onData(data) {
-    buf.push(data);
-  }
-
-  function onEnd() {
-    if (callback) callback(null, buf.join(""));
-    callback = null;
-  }
-
-  function onError(err) {
-    if (callback) callback(err);
-    callback = null;
   }
 }

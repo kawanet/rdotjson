@@ -2,7 +2,7 @@
 
 exports.format = csv;
 
-var NEWLINE = "\x0D\x0A";
+var table_to_csv = require("../gist/table_to_csv");
 
 /**
  * Format as CSV
@@ -20,19 +20,9 @@ function csv(R, options) {
   Object.keys(R).sort().forEach(function(type) {
     Object.keys(R[type]).sort().forEach(function(key) {
       var val = R[type][key];
-      var row = [type, key, val].map(filter).join(",") + NEWLINE;
-      rows.push(row);
+      rows.push([type, key, val]);
     });
   });
 
-  return rows.join("");
-}
-
-function filter(str) {
-  if (str == null) {
-    str = "";
-  } else if (str.search(/[,"\t]/) > -1) {
-    str = '"' + str.replace(/"/g, '""') + '"';
-  }
-  return str;
+  return table_to_csv(rows);
 }

@@ -23,32 +23,29 @@ function rtojson(xml, options, callback) {
   if (!options) options = {};
 
   if (isReadableStream(xml)) {
-    readFromStream(xml, main);
-  } else {
-    main(null, xml);
+    return readFromStream(xml, function(err, xml) {
+      if (err) {
+        if (callback) callback(err);
+        return;
+      }
+      rtojson(xml, options, callback);
+    });
   }
 
-  function main(err, xml) {
-    if (err) {
-      if (callback) callback(err);
-      return;
-    }
+  var $ = cheerio.load(xml, {
+    normalizeWhitespace: true,
+    xmlMode: true
+  });
 
-    var $ = cheerio.load(xml, {
-      normalizeWhitespace: true,
-      xmlMode: true
-    });
+  var R = options.R || {};
+  $("resources > *").each(function(idx, e) {
+    var $e = $(e);
+    var type = $e.attr("type") || e.name;
+    if (!type) return;
+    var hash = R[type] || (R[type] = {});
+    var name = $e.attr("name");
+    hash[name] = $e.text();
+  });
 
-    var R = options.R || {};
-    $("resources > *").each(function(idx, e) {
-      var $e = $(e);
-      var type = $e.attr("type") || e.name;
-      if (!type) return;
-      var hash = R[type] || (R[type] = {});
-      var name = $e.attr("name");
-      hash[name] = $e.text();
-    });
-
-    if (callback) return callback(null, R);
-  }
+  if (callback) return callback(null, R);
 }

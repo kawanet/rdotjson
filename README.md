@@ -30,21 +30,15 @@ rdotjson app/src/develop/res/values/*.xml > r_develop.json
 rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 ```
 
-### JSON USAGE
-
-```js
-var R = require("./r.json");
-
-console.warn(R.string.error_message);
-```
-
 ### CLI OPTIONS
 
-`--space=2` - JSON indent. default: 2
+`--exclude='*_android'` - Key name to exclude. Wildcard available.
 
 `--format=json` - Output format. default: json
 
 `--output=R.json` - Output filename. default: STDOUT
+
+`--space=2` - JSON indent. default: 2
 
 `-` - Input XML from STDIN
 
@@ -55,6 +49,14 @@ console.warn(R.string.error_message);
 `--format=csv --output=R.csv` - CSV
 
 `--format=rdotswift --output=R.swift` - SWIFT ([rdotswift](https://github.com/kawanet/rdotswift) module required)
+
+### JSON USAGE
+
+```js
+var R = require("./r.json");
+
+console.warn(R.string.error_message);
+```
 
 ## INSTALL
 

@@ -3,6 +3,7 @@
 var cheerio = require("cheerio");
 var isReadableStream = require("is-stream").readable;
 var readFromStream = require("./gist/read-from-stream");
+var regexpForWildcard = require("./gist/regexp-for-wildcard");
 
 module.exports = rtojson;
 
@@ -32,6 +33,8 @@ function rtojson(xml, options, callback) {
     });
   }
 
+  var exclude = options.exclude && regexpForWildcard(options.exclude);
+
   var $ = cheerio.load(xml, {
     normalizeWhitespace: true,
     xmlMode: true
@@ -42,8 +45,9 @@ function rtojson(xml, options, callback) {
     var $e = $(e);
     var type = $e.attr("type") || e.name;
     if (!type) return;
-    var hash = R[type] || (R[type] = {});
     var name = $e.attr("name");
+    if (exclude && name.match(exclude)) return;
+    var hash = R[type] || (R[type] = {});
     hash[name] = $e.text();
   });
 

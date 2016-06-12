@@ -10,10 +10,34 @@ var rdotjson = require("rdotjson");
 
 var xml = fs.readFileSync("strings.xml");
 
-rdotjson(xml, function (err, R) {
+rdotjson(xml, function(err, R) {
   if (err) throw err;
-  console.log(R.string.welcome);
+  console.log(R.string.app_name);
 });
+```
+
+## JAVASCRIPT API
+
+```js
+rdotjson(xml, options, callback);
+```
+
+- `xml` {String|Buffer|Stream}
+- `options` {Object}
+- `callback` {Function} `function(err, R) {...}`
+
+### JSON Formatter
+
+```js
+var format = rdotjson.format("json");
+var json = format(R, {space: 0}); // => {"string":{"app_name":"MyApp", ... }}
+```
+
+### CSV Formatter
+
+```js
+var format = rdotjson.format("csv");
+var csv = format(R); // => "string,app_name,MyApp" ...
 ```
 
 ## CLI
@@ -42,7 +66,7 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 `-` - Input XML from STDIN
 
-### CLI OUTPUT FORMATS
+### CLI FORMATTERS
 
 `--format=json --output=R.json` - JSON
 
@@ -50,18 +74,10 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 `--format=rdotswift --output=R.swift` - SWIFT ([rdotswift](https://github.com/kawanet/rdotswift) module required)
 
-### JSON USAGE
-
-```js
-var R = require("./r.json");
-
-console.warn(R.string.error_message);
-```
-
 ## INSTALL
 
 ```sh
-npm install -g kawanet/rdotjson
+npm install -g rdotjson
 ```
 
 ## REPOSITORY

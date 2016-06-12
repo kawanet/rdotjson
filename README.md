@@ -54,7 +54,7 @@ rdotjson app/src/develop/res/values/*.xml > r_develop.json
 rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 ```
 
-### CLI OPTIONS
+### CLI Options
 
 `--exclude='*_android'` - Key name to exclude. Wildcard available.
 
@@ -66,7 +66,7 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 `-` - Input XML from STDIN
 
-### CLI FORMATTERS
+### CLI Formatters
 
 `--format=json --output=R.json` - JSON
 

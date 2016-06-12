@@ -15,7 +15,8 @@
     "process.argv": "^0.1.0"
   },
   "devDependencies": {
-    "jshint": "^2.9.2"
+    "jshint": "^2.9.2",
+    "mocha": "^2.5.3"
   },
   "homepage": "https://github.com/kawanet/rdotjson#readme",
   "jshintConfig": {
@@ -38,6 +39,8 @@
   },
   "scripts": {
     "fixpack": "fixpack",
-    "test": "./node_modules/.bin/jshint *.js *.json format/*.js gist/*.js"
+    "jshint": "./node_modules/.bin/jshint *.js *.json format/*.js gist/*.js test/*.js",
+    "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
+    "test": "npm run jshint && npm run mocha"
   }
 }

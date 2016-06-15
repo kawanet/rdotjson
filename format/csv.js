@@ -20,7 +20,13 @@ function csv(R, options) {
   Object.keys(R).sort().forEach(function(type) {
     Object.keys(R[type]).sort().forEach(function(key) {
       var val = R[type][key];
-      rows.push([type, key, val]);
+      if (val instanceof Array) {
+        val.forEach(function(item) {
+          rows.push([type, key, item]);
+        });
+      } else {
+        rows.push([type, key, val]);
+      }
     });
   });
 

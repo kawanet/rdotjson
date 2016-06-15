@@ -46,10 +46,23 @@ function rtojson(xml, options, callback) {
     var $e = $(e);
     var type = $e.attr("type") || e.name;
     if (!type) return;
+    var array = type.match(/-array$/);
+    if (array) {
+      type = "array";
+    }
     var name = $e.attr("name");
     if (exclude && name.match(exclude)) return;
     var hash = R[type] || (R[type] = {});
-    hash[name] = $e.text();
+    var val;
+    if (array) {
+      val = [];
+      $e.find("item").each(function(idx, item) {
+        val.push($(item).text());
+      });
+    } else {
+      val = $e.text();
+    }
+    hash[name] = val;
   });
 
   if (callback) return callback(null, R);

@@ -11,7 +11,8 @@ exports.format = format;
 var model = {
   bool: require("./model/bool"),
   color: require("./model/color"),
-  integer: require("./model/integer")
+  integer: require("./model/integer"),
+  string: require("./model/string")
 };
 
 /**

@@ -15,7 +15,7 @@ function table_to_csv(table) {
       } else {
         str += "";
       }
-      if (str.search(/[,"\t]/) > -1) {
+      if (str.search(/[,"\t\n\r]/) > -1) {
         str = '"' + str.replace(/"/g, '""') + '"';
       }
       return str;

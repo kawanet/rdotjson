@@ -9,6 +9,7 @@ var exports = module.exports = rtojson;
 exports.format = format;
 
 var model = {
+  bool: require("./model/bool"),
   integer: require("./model/integer")
 };
 

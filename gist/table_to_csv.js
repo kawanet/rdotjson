@@ -8,11 +8,14 @@
  */
 
 function table_to_csv(table) {
-  var buf = table.map(function(row){
-    row = row.map(function(str){
+  var buf = table.map(function(row) {
+    row = row.map(function(str) {
       if (str == null) {
         str = "";
-      } else if (str.search(/[,"\t]/) > -1) {
+      } else {
+        str += "";
+      }
+      if (str.search(/[,"\t]/) > -1) {
         str = '"' + str.replace(/"/g, '""') + '"';
       }
       return str;

@@ -8,6 +8,10 @@ var regexpForWildcard = require("./gist/regexp-for-wildcard");
 var exports = module.exports = rtojson;
 exports.format = format;
 
+var model = {
+  integer: require("./model/integer")
+};
+
 /**
  * parse resource XML
  *
@@ -46,23 +50,30 @@ function rtojson(xml, options, callback) {
     var $e = $(e);
     var type = $e.attr("type") || e.name;
     if (!type) return;
+    var group = type;
     var array = type.match(/-array$/);
     if (array) {
-      type = "array";
+      group = "array";
+      type = type.replace(/-array$/, "");
     }
     var name = $e.attr("name");
     if (exclude && name.match(exclude)) return;
-    var hash = R[type] || (R[type] = {});
+    var hash = R[group] || (R[group] = {});
     var val;
     if (array) {
       val = [];
       $e.find("item").each(function(idx, item) {
-        val.push($(item).text());
+        val.push(filter($(item).text()));
       });
     } else {
-      val = $e.text();
+      val = filter($e.text());
     }
     hash[name] = val;
+
+    function filter(val) {
+      var f = model[type];
+      return f ? f(val) : val;
+    }
   });
 
   if (callback) return callback(null, R);

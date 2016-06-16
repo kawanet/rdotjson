@@ -1,7 +1,7 @@
 {
   "name": "rdotjson",
   "description": "Android String Resource XML Parser",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "@kawanet",
   "bin": {
     "rdotjson": "./rdotjson.cli.js"

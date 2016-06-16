@@ -16,6 +16,15 @@ rdotjson(xml, function(err, R) {
 });
 ```
 
+## SUPPORTED TYPES
+
+- `R.bool` - Boolean
+- `R.color` - String e.g. "#FFFFFF"
+- `R.dimen` - String e.g. "16dp"
+- `R.integer` - Integer
+- `R.array` - Array
+- `R.string` - String
+
 ## JAVASCRIPT API
 
 ```js

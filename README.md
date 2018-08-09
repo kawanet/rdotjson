@@ -1,14 +1,16 @@
 # rdotjson
 
+[![Build Status](https://travis-ci.org/kawanet/rdotjson.svg?branch=master)](https://travis-ci.org/kawanet/rdotjson) [![npm version](https://badge.fury.io/js/rdotjson.svg)](https://badge.fury.io/js/rdotjson)
+
 Android String Resource XML Parser
 
 ## SYNOPSIS
 
 ```js
-var fs = require("fs");
-var rdotjson = require("rdotjson");
+const fs = require("fs");
+const rdotjson = require("rdotjson");
 
-var xml = fs.readFileSync("strings.xml");
+const xml = fs.readFileSync("strings.xml");
 
 rdotjson(xml, function(err, R) {
   if (err) throw err;
@@ -38,15 +40,15 @@ rdotjson(xml, options, callback);
 ### JSON Formatter
 
 ```js
-var format = rdotjson.format("json");
-var json = format(R, {space: 0}); // => {"string":{"app_name":"MyApp", ... }}
+const format = rdotjson.format("json");
+const json = format(R, {space: 0}); // => {"string":{"app_name":"MyApp", ... }}
 ```
 
 ### CSV Formatter
 
 ```js
-var format = rdotjson.format("csv");
-var csv = format(R); // => "string,app_name,MyApp" ...
+const format = rdotjson.format("csv");
+const csv = format(R); // => "string,app_name,MyApp" ...
 ```
 
 ## CLI
@@ -93,11 +95,16 @@ npm install -g rdotjson
 
 - [https://github.com/kawanet/rdotjson](https://github.com/kawanet/rdotjson)
 
+## SEE ALSO
+
+- [https://www.npmjs.com/package/rdotswift](https://www.npmjs.com/package/rdotswift)
+- [https://qiita.com/kawanet/items/f48ef1f2e264982912f4](https://qiita.com/kawanet/items/f48ef1f2e264982912f4)
+
 ## LICENSE
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Yusuke Kawasaki
+Copyright (c) 2016-2018 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

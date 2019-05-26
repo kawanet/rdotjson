@@ -14,6 +14,13 @@ var model = {
   string: require("./model/string")
 };
 
+function getComment(ele) {
+  if (!ele.next) return null;
+  if (ele.next.type === 'comment') return ele.next.data.trim();
+  if (ele.next.type === 'text') return getComment(ele.next);
+  return null;
+}
+
 /**
  * parse resource XML
  *
@@ -75,6 +82,16 @@ function rtojson(xml, options, callback) {
     function filter(val) {
       var f = model[type];
       return f ? f(val) : val;
+    }
+
+    if (options.includeComments) {
+      var comment = getComment(e);
+      if (comment) {
+        hash[name] = {
+          value: hash[name],
+          comment: comment
+        };
+      }
     }
   });
 

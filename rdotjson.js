@@ -48,9 +48,10 @@ function rtojson(xml, options, callback) {
   });
 
   var R = options.R || {};
+  var type;
   $("resources > *").each(function(idx, e) {
     var $e = $(e);
-    var type = $e.attr("type") || e.name;
+    type = $e.attr("type") || e.name;
     if (!type) return;
     var group = type;
     var array = type.match(/-array$/);
@@ -65,20 +66,21 @@ function rtojson(xml, options, callback) {
     if (array) {
       val = [];
       $e.find("item").each(function(idx, item) {
-        val.push(filter($(item).text()));
+        val.push(getValue($(item)));
       });
     } else {
-      val = filter($e.text());
+      val = getValue($e);
     }
     hash[name] = val;
-
-    function filter(val) {
-      var f = model[type];
-      return f ? f(val) : val;
-    }
   });
 
   if (callback) return callback(null, R);
+
+  function getValue($item) {
+    var val = $item.text();
+    var filter = model[type];
+    return filter ? filter(val) : val;
+  }
 }
 
 /**

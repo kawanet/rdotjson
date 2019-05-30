@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- before bool -->
-    <bool name="screen_small">true</bool>
-    <!-- between bool -->
+    <bool name="screen_small">true</bool> <!-- between bool -->
     <bool name="adjust_view_bounds">false</bool>
     <!-- after bool -->
 
@@ -19,6 +18,7 @@
     <!-- after integer -->
 
     <!-- before string -->
-    <string name="app_name">MyApp</string>
+    <string name="app_name">MyApp</string> <!-- between string -->
+    <string name="action_settings">Settings</string>
     <!-- after string -->
 </resources>

@@ -62,4 +62,19 @@ describe(TITLE, function() {
       done();
     });
   });
+
+  it("{attr: true}", function(done) {
+    rdotjson(xml, {attr: true}, function(err, R) {
+      assert.ok(!err, err);
+      assert.ok(R);
+      assert.ok(R.string);
+
+      assert.equal(R.string.default_latitude, '40.7831');
+      assert.equal(R.string.default_longitude.attr.translatable, 'false');
+      assert.equal(R.string.default_latitude, '40.7831');
+      assert.equal(R.string.default_longitude.attr.translatable, 'false');
+
+      done();
+    });
+  });
 });

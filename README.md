@@ -53,6 +53,7 @@ const csv = format(R); // => "string,app_name,MyApp" ...
 
 ### Option Parameters
 
+- `attr: true` - Add `attr` property which includes XML attributes.
 - `exclude: '*_android'` - Key names to exclude. Wildcard available.
 - `xml: true` - Preserve raw XML strings, instead of plain text parsed
 

@@ -48,9 +48,10 @@ function rtojson(xml, options, callback) {
   });
 
   var R = options.R || {};
+  var type;
   $("resources > *").each(function(idx, e) {
     var $e = $(e);
-    var type = $e.attr("type") || e.name;
+    type = $e.attr("type") || e.name;
     if (!type) return;
     var group = type;
     var array = type.match(/-array$/);
@@ -65,20 +66,67 @@ function rtojson(xml, options, callback) {
     if (array) {
       val = [];
       $e.find("item").each(function(idx, item) {
-        val.push(filter($(item).text()));
+        val.push(getValue($(item)));
       });
     } else {
-      val = filter($e.text());
+      val = getValue($e);
     }
     hash[name] = val;
-
-    function filter(val) {
-      var f = model[type];
-      return f ? f(val) : val;
-    }
   });
 
   if (callback) return callback(null, R);
+
+  function getValue($item) {
+    var val;
+
+    if (type === "string" && options.xml) {
+      val = $item.html();
+    } else {
+      val = getText($item);
+    }
+
+    if (options.attr) {
+      val = addAttributes(val, $item);
+    }
+
+    return val;
+  }
+
+  function getText($item) {
+    var val = $item.text();
+    var filter = model[type];
+    return filter ? filter(val) : val;
+  }
+}
+
+function wrapObject(val) {
+  /* jshint -W053 */
+
+  if ("boolean" === typeof val) {
+    // W053: Do not use Boolean as a constructor.
+    val = new Boolean(val);
+  } else if ("number" === typeof val) {
+    // W053: Do not use Number as a constructor.
+    val = new Number(val);
+  } else if ("string" === typeof val) {
+    // W053: Do not use String as a constructor.
+    val = new String(val);
+  }
+
+  return val;
+}
+
+function addAttributes(val, $item) {
+  var attr = $item.attr();
+
+  if (Object.keys(attr).length) {
+    val = wrapObject(val);
+    if ("object" === typeof val) {
+      val.attr = attr;
+    }
+  }
+
+  return val;
 }
 
 /**

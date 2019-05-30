@@ -1,0 +1,13 @@
+<resources>
+    <string name="activation_warning">
+        <b>Some text:</b> Text.\n\nSome more text.</string>
+    <string name="cancel">
+        <u>Cancel</u>
+    </string>
+    <string name="default_latitude" translatable="false">40.7831</string>
+    <string name="default_longitude" translatable="false">-73.9712</string>
+    <string name="detail_developer_mode_on"><![CDATA[Text. Some more text.]]></string>
+    <string name="permission_justification_required_warning">
+        <font color="#ff4343">You have declined a required permission. Exiting.</font>
+    </string>
+</resources>

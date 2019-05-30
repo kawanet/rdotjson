@@ -12,7 +12,6 @@ describe(TITLE, function() {
   var jsonFormat;
   var jsonString;
   var csvFormat;
-  var csvString;
 
   it("comments.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/comments.xml");
@@ -27,8 +26,7 @@ describe(TITLE, function() {
       assert.ok(jsonString);
 
       csvFormat = rdotjson.format("csv");
-      csvString = csvFormat(R);
-      assert.ok(csvString);
+      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false');
 
       done();
     });
@@ -40,7 +38,6 @@ describe(TITLE, function() {
       checkAll(R);
 
       assert.equal(jsonFormat(R), jsonString);
-      assert.equal(csvFormat(R), csvString);
 
       assert.equal(R.bool.screen_small.comment + "", "before bool,between bool");
       assert.equal(R.bool.adjust_view_bounds.comment + "", "after bool,before color");
@@ -48,6 +45,8 @@ describe(TITLE, function() {
       assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after dimen,before integer");
       assert.equal(R.integer.max_speed.comment + "", "after integer,before string");
       assert.equal(R.string.app_name.comment + "", "after string");
+
+      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false,"after bool,before color"');
 
       done();
     });
@@ -59,7 +58,6 @@ describe(TITLE, function() {
       checkAll(R);
 
       assert.equal(jsonFormat(R), jsonString);
-      assert.equal(csvFormat(R), csvString);
 
       assert.equal(R.bool.screen_small.comment + "", "before bool");
       assert.equal(R.bool.adjust_view_bounds.comment + "", "between bool");
@@ -68,10 +66,16 @@ describe(TITLE, function() {
       assert.equal(R.integer.max_speed.comment + "", "after dimen,before integer");
       assert.equal(R.string.app_name.comment + "", "after integer,before string,after string");
 
+      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false,between bool');
+
       done();
     });
   });
 });
+
+function firstRow(csv) {
+  return csv.split(/\r?\n/).shift();
+}
 
 function checkAll(R) {
   assert.ok(R);

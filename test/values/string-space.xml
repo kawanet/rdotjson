@@ -1,5 +1,51 @@
 <resources>
-    <string name="single_line">
-        single line
-    </string>
+    <string name="single_line_without_newline">
+        FOO     BAR
+    </string> <!-- "FOO.BAR" -->
+
+    <string name="multiple_lines_without_newline">
+        FOO
+
+
+BAR
+    </string> <!-- "FOO.BAR" -->
+
+    <string name="indented_lines_without_newline">
+        FOO
+        BAR
+    </string> <!-- "FOO.BAR" -->
+
+    <string name="single_line_with_newline">
+        FOO     BAR\n
+    </string> <!-- "FOO.BAR\n" -->
+
+    <string name="multiple_lines_with_newline">
+        FOO\n
+\n
+\n
+BAR\n
+    </string> <!-- "FOO\n.\n.\n.BAR\n" -->
+
+    <string name="indented_lines_with_newline">
+        FOO\n
+        \n
+        \n
+        BAR\n
+    </string> <!-- "FOO\n.\n.\n.BAR\n" -->
+
+    <string name="single_line_with_quote">
+        "FOO     BAR\n"
+    </string> <!-- "FOO.....BAR\n" -->
+
+    <string name="multiple_lines_with_quote">
+        "FOO\n
+\n
+\n
+BAR\n"
+    </string> <!-- "FOO\n\n\n\n\n\nBAR\n" -->
+
+    <string name="indented_lines_with_quote">
+        "FOO\n
+        BAR\n"
+    </string> <!-- "FOO\n\n........BAR\n" -->
 </resources>

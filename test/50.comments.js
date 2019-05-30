@@ -57,10 +57,10 @@ describe(TITLE, function() {
       assert.equal(csvFormat(R), csvString);
 
       assert.equal(R.bool.screen_small.comment + "", "between bool");
-      assert.equal(R.bool.adjust_view_bounds.comment + "", "after bool");
-      assert.equal(R.color.colorPrimary.comment + "", "after color");
-      assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after dimen");
-      assert.equal(R.integer.max_speed.comment + "", "after integer");
+      assert.equal(R.bool.adjust_view_bounds.comment + "", "after bool,before color");
+      assert.equal(R.color.colorPrimary.comment + "", "after color,before dimen");
+      assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after dimen,before integer");
+      assert.equal(R.integer.max_speed.comment + "", "after integer,before string");
       assert.equal(R.string.app_name.comment + "", "after string");
 
       done();

@@ -14,13 +14,6 @@ var model = {
   string: require("./model/string")
 };
 
-function getComment(ele) {
-  if (!ele.next) return null;
-  if (ele.next.type === 'comment') return ele.next.data.trim();
-  if (ele.next.type === 'text') return getComment(ele.next);
-  return null;
-}
-
 /**
  * parse resource XML
  *
@@ -55,7 +48,30 @@ function rtojson(xml, options, callback) {
   });
 
   var R = options.R || {};
-  $("resources > *").each(function(idx, e) {
+  var includeComments = options.includeComments;
+  var hash;
+  var name;
+
+  $("resources").each(function(idx, resources) {
+    var childNodes = resources && resources.childNodes;
+    if (!childNodes) return;
+
+    [].forEach.call(childNodes, function(e) {
+      if (e.type === "comment" && includeComments) {
+        var comment = e.data.trim();
+        if (hash && name) {
+          appendComment(comment);
+        }
+      }
+
+      if (e.type === "tag") eachItem(e);
+    });
+  });
+
+  if (callback) return callback(null, R);
+
+  function eachItem(e) {
+    hash = name = null;
     var $e = $(e);
     var type = $e.attr("type") || e.name;
     if (!type) return;
@@ -65,9 +81,9 @@ function rtojson(xml, options, callback) {
       group = "array";
       type = type.replace(/-array$/, "");
     }
-    var name = $e.attr("name");
+    name = $e.attr("name");
     if (exclude && name.match(exclude)) return;
-    var hash = R[group] || (R[group] = {});
+    hash = R[group] || (R[group] = {});
     var val;
     if (array) {
       val = [];
@@ -83,16 +99,12 @@ function rtojson(xml, options, callback) {
       var f = model[type];
       return f ? f(val) : val;
     }
+  }
 
-    if (options.includeComments) {
-      var comment = getComment(e);
-      if (comment) {
-        hash[name] = addComment(hash[name], comment);
-      }
-    }
-  });
-
-  if (callback) return callback(null, R);
+  function appendComment(comment) {
+    if (!comment) return;
+    hash[name] = addComment(hash[name], comment);
+  }
 }
 
 function addComment(val, comment) {
@@ -110,7 +122,14 @@ function addComment(val, comment) {
   }
 
   if ("object" === typeof val) {
-    val.comment = comment;
+    var prev = val.comment;
+    if (prev instanceof Array) {
+      prev.push(comment);
+    } else if ("string" === typeof prev) {
+      val.comment = [prev, comment];
+    } else {
+      val.comment = comment;
+    }
   }
 
   return val;

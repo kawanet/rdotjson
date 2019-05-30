@@ -16,8 +16,11 @@ describe(TITLE, function() {
   it("comments.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/comments.xml");
     assert.ok(xml);
+    done();
+  });
 
-    rdotjson(xml, function(err, R) {
+  it("{includeComments: false}", function(done) {
+    rdotjson(xml, {includeComments: false}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
 
@@ -32,7 +35,7 @@ describe(TITLE, function() {
     });
   });
 
-  it("includeComments:true", function(done) {
+  it("{includeComments: true}", function(done) {
     rdotjson(xml, {includeComments: true}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
@@ -52,7 +55,7 @@ describe(TITLE, function() {
     });
   });
 
-  it("includeComments:'pre'", function(done) {
+  it("{includeComments: 'pre'}", function(done) {
     rdotjson(xml, {includeComments: "pre"}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);

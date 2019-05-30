@@ -77,6 +77,18 @@ function rtojson(xml, options, callback) {
   if (callback) return callback(null, R);
 
   function getValue($item) {
+    var val;
+
+    if (type === "string" && options.xml) {
+      val = $item.html();
+    } else {
+      val = getText($item);
+    }
+
+    return val;
+  }
+
+  function getText($item) {
     var val = $item.text();
     var filter = model[type];
     return filter ? filter(val) : val;

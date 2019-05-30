@@ -51,6 +51,11 @@ const format = rdotjson.format("csv");
 const csv = format(R); // => "string,app_name,MyApp" ...
 ```
 
+### Option Parameters
+
+- `exclude: '*_android'` - Key names to exclude. Wildcard available.
+- `xml: true` - Preserve raw XML strings, instead of plain text parsed
+
 ## CLI
 
 ```sh
@@ -67,13 +72,15 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 ### CLI Options
 
-`--exclude='*_android'` - Key name to exclude. Wildcard available.
+`--exclude='*_android'` - Key names to exclude. Wildcard available.
 
 `--format=json` - Output format. default: json
 
 `--output=R.json` - Output filename. default: STDOUT
 
 `--space=2` - JSON indent. default: 2
+
+`--xml` - Preserve raw XML strings, instead of plain text parsed
 
 `-` - Input XML from STDIN
 

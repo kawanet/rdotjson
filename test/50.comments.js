@@ -19,8 +19,8 @@ describe(TITLE, function() {
     done();
   });
 
-  it("{includeComments: false}", function(done) {
-    rdotjson(xml, {includeComments: false}, function(err, R) {
+  it("{comment: null}", function(done) {
+    rdotjson(xml, {comment: null}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
 
@@ -35,8 +35,8 @@ describe(TITLE, function() {
     });
   });
 
-  it("{includeComments: true}", function(done) {
-    rdotjson(xml, {includeComments: true}, function(err, R) {
+  it("{comment: 'post'}", function(done) {
+    rdotjson(xml, {comment: 'post'}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
 
@@ -55,8 +55,8 @@ describe(TITLE, function() {
     });
   });
 
-  it("{includeComments: 'pre'}", function(done) {
-    rdotjson(xml, {includeComments: "pre"}, function(err, R) {
+  it("{comment: 'pre'}", function(done) {
+    rdotjson(xml, {comment: 'pre'}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
 

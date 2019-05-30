@@ -48,10 +48,12 @@ function rtojson(xml, options, callback) {
   });
 
   var R = options.R || {};
+  // prepositive XML comments
+  var preComments = (options.comment === "pre");
+  // postpositive XML comments
+  var postComments = (options.comment === "post");
+  var includeComments = preComments || postComments;
   var type;
-  var includeComments = options.includeComments;
-  var preComments = (includeComments === "pre");
-  var postComments = includeComments && !preComments;
   var hash;
   var name;
 

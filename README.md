@@ -56,8 +56,8 @@ const csv = format(R); // => "string,app_name,MyApp" ...
 - `attr: true` - Add `attr` property which includes XML attributes.
 - `exclude: '*_android'` - Key names to exclude. Wildcard available.
 - `xml: true` - Preserve raw XML strings, instead of plain text parsed
-- `includeComments: true` - include postpositive XML comments located after elements
-- `includeComments: 'pre'` - include prepositive XML comments located before elements
+- `comment: 'post'` - include postpositive XML comments located after elements
+- `comment: 'pre'` - include prepositive XML comments located before elements
 
 ## CLI
 
@@ -79,9 +79,9 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 `--format=json` - Output format. default: json
 
-`--includeComments` - include postpositive XML comments located after elements
+`--comment=post` - include postpositive XML comments located after elements
 
-`--includeComments=pre` - include prepositive XML comments located before elements
+`--comment=pre` - include prepositive XML comments located before elements
 
 `--output=R.json` - Output filename. default: STDOUT
 

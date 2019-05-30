@@ -87,15 +87,33 @@ function rtojson(xml, options, callback) {
     if (options.includeComments) {
       var comment = getComment(e);
       if (comment) {
-        hash[name] = {
-          value: hash[name],
-          comment: comment
-        };
+        hash[name] = addComment(hash[name], comment);
       }
     }
   });
 
   if (callback) return callback(null, R);
+}
+
+function addComment(val, comment) {
+  /* jshint -W053 */
+
+  if ("boolean" === typeof val) {
+    // W053: Do not use Boolean as a constructor.
+    val = new Boolean(val);
+  } else if ("number" === typeof val) {
+    // W053: Do not use Number as a constructor.
+    val = new Number(val);
+  } else if ("string" === typeof val) {
+    // W053: Do not use String as a constructor.
+    val = new String(val);
+  }
+
+  if ("object" === typeof val) {
+    val.comment = comment;
+  }
+
+  return val;
 }
 
 /**

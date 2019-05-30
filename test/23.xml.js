@@ -48,9 +48,9 @@ describe(TITLE, function() {
       assert.ok(R.string);
 
       // note: \\n is not unescaped
-      assert.equal(R.string.activation_warning, ' <b>Some text:</b> Text.\\n\\nSome more text.');
+      assert.equal(R.string.activation_warning, '\n        <b>Some text:</b> Text.\\n\\nSome more text.');
 
-      assert.equal(R.string.cancel, ' <u>Cancel</u> ');
+      assert.equal(R.string.cancel, '\n        <u>Cancel</u>\n    ');
 
       assert.equal(R.string.default_latitude, '40.7831');
 
@@ -58,7 +58,7 @@ describe(TITLE, function() {
 
       assert.equal(R.string.detail_developer_mode_on, '<![CDATA[Text. Some more text.]]>');
 
-      assert.equal(R.string.permission_justification_required_warning, ' <font color="#ff4343">You have declined a required permission. Exiting.</font> ');
+      assert.equal(R.string.permission_justification_required_warning, '\n        <font color="#ff4343">You have declined a required permission. Exiting.</font>\n    ');
       done();
     });
   });

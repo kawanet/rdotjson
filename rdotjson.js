@@ -43,7 +43,7 @@ function rtojson(xml, options, callback) {
   var exclude = options.exclude && regexpForWildcard(options.exclude);
 
   var $ = cheerio.load(xml, {
-    normalizeWhitespace: true,
+    normalizeWhitespace: !options.xml,
     xmlMode: true
   });
 

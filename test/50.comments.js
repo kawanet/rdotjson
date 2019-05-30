@@ -9,6 +9,10 @@ var TITLE = __filename.replace(/^.*\//, "") + ":";
 
 describe(TITLE, function() {
   var xml;
+  var jsonFormat;
+  var jsonString;
+  var csvFormat;
+  var csvString;
 
   it("comments.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/comments.xml");
@@ -25,6 +29,14 @@ describe(TITLE, function() {
       assert.equal(R.integer.max_speed, 75);
       assert.equal(R.string.app_name, "MyApp");
 
+      jsonFormat = rdotjson.format("json");
+      jsonString = jsonFormat(R);
+      assert.ok(jsonString);
+
+      csvFormat = rdotjson.format("csv");
+      csvString = csvFormat(R);
+      assert.ok(csvString);
+
       done();
     });
   });
@@ -40,6 +52,9 @@ describe(TITLE, function() {
       assert.equal(R.dimen.activity_horizontal_margin, "16dp");
       assert.equal(R.integer.max_speed, 75);
       assert.equal(R.string.app_name, "MyApp");
+
+      assert.equal(jsonFormat(R), jsonString);
+      assert.equal(csvFormat(R), csvString);
 
       assert.equal(R.bool.screen_small.comment + "", "between bool");
       assert.equal(R.bool.adjust_view_bounds.comment + "", "after bool");

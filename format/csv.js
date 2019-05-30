@@ -20,12 +20,18 @@ function csv(R, options) {
   Object.keys(R).sort().forEach(function(type) {
     Object.keys(R[type]).sort().forEach(function(key) {
       var val = R[type][key];
+      var comment = val && val.comment;
+
       if (val instanceof Array) {
-        val.forEach(function(item) {
-          rows.push([type, key, item]);
+        val.forEach(function(item, idx) {
+          var row = [type, key, item];
+          if (comment && !idx) row.push(comment);
+          rows.push(row);
         });
       } else {
-        rows.push([type, key, val]);
+        var row = [type, key, val];
+        if (comment) row.push(comment);
+        rows.push(row);
       }
     });
   });

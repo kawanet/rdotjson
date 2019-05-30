@@ -52,7 +52,10 @@ function rtojson(xml, options, callback) {
   var preComments = (options.comment === "pre");
   // postpositive XML comments
   var postComments = (options.comment === "post");
-  var includeComments = preComments || postComments;
+  // right-side XML comment within the same line
+  var rightComment = (options.comment === "right");
+
+  var includeComments = preComments || postComments || rightComment;
   var type;
   var hash;
   var name;
@@ -64,13 +67,20 @@ function rtojson(xml, options, callback) {
     var comments;
 
     [].forEach.call(childNodes, function(e) {
-      if (e.type === "comment" && includeComments) {
+      if (includeComments && e.type === "comment") {
         var comment = e.data.trim();
-        if (postComments && hash && name) {
+        if (!preComments && hash && name) {
           appendComment(comment);
-        } else {
+        } else if (!rightComment) {
           if (!comments) comments = [];
           comments.push(comment);
+        }
+      }
+
+      // ignore following comments after newline
+      if (rightComment && e.type === "text") {
+        if (e.data.indexOf("\n") > -1) {
+          hash = name = null;
         }
       }
 

@@ -76,6 +76,25 @@ describe(TITLE, function() {
       done();
     });
   });
+
+  it("{comment: 'right'}", function(done) {
+    rdotjson(xml, {comment: 'right'}, function(err, R) {
+      assert.ok(!err, err);
+      checkAll(R);
+
+      assert.equal(jsonFormat(R), jsonString);
+
+      assert.equal(R.bool.screen_small.comment, "between bool", "R.bool.screen_small.comment");
+      assert.equal(R.bool.adjust_view_bounds.comment, null, "R.bool.adjust_view_bounds.comment");
+
+      assert.equal(R.string.app_name.comment, "between string", "R.string.app_name.comment");
+      assert.equal(R.string.action_settings.comment, null, "R.string.action_settings.comment");
+
+      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false');
+
+      done();
+    });
+  });
 });
 
 function firstRow(csv) {

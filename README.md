@@ -58,6 +58,7 @@ const csv = format(R); // => "string,app_name,MyApp" ...
 - `xml: true` - Preserve raw XML strings, instead of plain text parsed
 - `comment: 'post'` - include postpositive XML comments located after elements
 - `comment: 'pre'` - include prepositive XML comments located before elements
+- `comment: 'right'` - include right-side XML comment within the same line
 
 ## CLI
 
@@ -82,6 +83,8 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 `--comment=post` - include postpositive XML comments located after elements
 
 `--comment=pre` - include prepositive XML comments located before elements
+
+`--comment=right` - include right-side XML comment within the same line
 
 `--output=R.json` - Output filename. default: STDOUT
 

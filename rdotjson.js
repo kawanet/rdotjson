@@ -49,7 +49,49 @@ function rtojson(xml, options, callback) {
 
   var R = options.R || {};
   var type;
-  $("resources > *").each(function(idx, e) {
+  var includeComments = options.includeComments;
+  var preComments = (includeComments === "pre");
+  var postComments = includeComments && !preComments;
+  var hash;
+  var name;
+
+  $("resources").each(function(idx, resources) {
+    var childNodes = resources && resources.childNodes;
+    if (!childNodes) return;
+
+    var comments;
+
+    [].forEach.call(childNodes, function(e) {
+      if (e.type === "comment" && includeComments) {
+        var comment = e.data.trim();
+        if (postComments && hash && name) {
+          appendComment(comment);
+        } else {
+          if (!comments) comments = [];
+          comments.push(comment);
+        }
+      }
+
+      if (e.type !== "tag") return;
+
+      eachItem(e);
+
+      if (comments && hash && name) {
+        comments.forEach(appendComment);
+      }
+
+      comments = null;
+    });
+
+    if (comments && hash && name) {
+      comments.forEach(appendComment);
+    }
+  });
+
+  if (callback) return callback(null, R);
+
+  function eachItem(e) {
+    hash = name = null;
     var $e = $(e);
     type = $e.attr("type") || e.name;
     if (!type) return;
@@ -59,9 +101,9 @@ function rtojson(xml, options, callback) {
       group = "array";
       type = type.replace(/-array$/, "");
     }
-    var name = $e.attr("name");
+    name = $e.attr("name");
     if (exclude && name.match(exclude)) return;
-    var hash = R[group] || (R[group] = {});
+    hash = R[group] || (R[group] = {});
     var val;
     if (array) {
       val = [];
@@ -72,7 +114,7 @@ function rtojson(xml, options, callback) {
       val = getValue($e);
     }
     hash[name] = val;
-  });
+  }
 
   if (callback) return callback(null, R);
 
@@ -97,6 +139,11 @@ function rtojson(xml, options, callback) {
     var filter = model[type];
     return filter ? filter(val) : val;
   }
+
+  function appendComment(comment) {
+    if (!comment) return;
+    hash[name] = addComment(hash[name], comment);
+  }
 }
 
 function wrapObject(val) {
@@ -111,6 +158,23 @@ function wrapObject(val) {
   } else if ("string" === typeof val) {
     // W053: Do not use String as a constructor.
     val = new String(val);
+  }
+
+  return val;
+}
+
+function addComment(val, comment) {
+  val = wrapObject(val);
+
+  if ("object" === typeof val) {
+    var prev = val.comment;
+    if (prev instanceof Array) {
+      prev.push(comment);
+    } else if ("string" === typeof prev) {
+      val.comment = [prev, comment];
+    } else {
+      val.comment = comment;
+    }
   }
 
   return val;

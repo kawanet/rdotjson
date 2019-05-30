@@ -77,6 +77,10 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 `--format=json` - Output format. default: json
 
+`--includeComments` - include postpositive XML comments located after elements
+
+`--includeComments=pre` - include prepositive XML comments located before elements
+
 `--output=R.json` - Output filename. default: STDOUT
 
 `--space=2` - JSON indent. default: 2

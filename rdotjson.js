@@ -49,6 +49,8 @@ function rtojson(xml, options, callback) {
 
   var R = options.R || {};
   var includeComments = options.includeComments;
+  var preComments = (includeComments === "pre");
+  var postComments = includeComments && !preComments;
   var hash;
   var name;
 
@@ -56,16 +58,33 @@ function rtojson(xml, options, callback) {
     var childNodes = resources && resources.childNodes;
     if (!childNodes) return;
 
+    var comments;
+
     [].forEach.call(childNodes, function(e) {
       if (e.type === "comment" && includeComments) {
         var comment = e.data.trim();
-        if (hash && name) {
+        if (postComments && hash && name) {
           appendComment(comment);
+        } else {
+          if (!comments) comments = [];
+          comments.push(comment);
         }
       }
 
-      if (e.type === "tag") eachItem(e);
+      if (e.type !== "tag") return;
+
+      eachItem(e);
+
+      if (comments && hash && name) {
+        comments.forEach(appendComment);
+      }
+
+      comments = null;
     });
+
+    if (comments && hash && name) {
+      comments.forEach(appendComment);
+    }
   });
 
   if (callback) return callback(null, R);

@@ -22,13 +22,6 @@ describe(TITLE, function() {
       assert.ok(!err, err);
       checkAll(R);
 
-      assert.equal(R.bool.screen_small, true);
-      assert.equal(R.bool.adjust_view_bounds, false);
-      assert.equal(R.color.colorPrimary + "", "#3F51B5");
-      assert.equal(R.dimen.activity_horizontal_margin, "16dp");
-      assert.equal(R.integer.max_speed, 75);
-      assert.equal(R.string.app_name, "MyApp");
-
       jsonFormat = rdotjson.format("json");
       jsonString = jsonFormat(R);
       assert.ok(jsonString);
@@ -46,22 +39,34 @@ describe(TITLE, function() {
       assert.ok(!err, err);
       checkAll(R);
 
-      assert.equal(R.bool.screen_small, true);
-      assert.equal(R.bool.adjust_view_bounds, false);
-      assert.equal(R.color.colorPrimary + "", "#3F51B5");
-      assert.equal(R.dimen.activity_horizontal_margin, "16dp");
-      assert.equal(R.integer.max_speed, 75);
-      assert.equal(R.string.app_name, "MyApp");
-
       assert.equal(jsonFormat(R), jsonString);
       assert.equal(csvFormat(R), csvString);
 
-      assert.equal(R.bool.screen_small.comment + "", "between bool");
+      assert.equal(R.bool.screen_small.comment + "", "before bool,between bool");
       assert.equal(R.bool.adjust_view_bounds.comment + "", "after bool,before color");
       assert.equal(R.color.colorPrimary.comment + "", "after color,before dimen");
       assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after dimen,before integer");
       assert.equal(R.integer.max_speed.comment + "", "after integer,before string");
       assert.equal(R.string.app_name.comment + "", "after string");
+
+      done();
+    });
+  });
+
+  it("includeComments:'pre'", function(done) {
+    rdotjson(xml, {includeComments: "pre"}, function(err, R) {
+      assert.ok(!err, err);
+      checkAll(R);
+
+      assert.equal(jsonFormat(R), jsonString);
+      assert.equal(csvFormat(R), csvString);
+
+      assert.equal(R.bool.screen_small.comment + "", "before bool");
+      assert.equal(R.bool.adjust_view_bounds.comment + "", "between bool");
+      assert.equal(R.color.colorPrimary.comment + "", "after bool,before color");
+      assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after color,before dimen");
+      assert.equal(R.integer.max_speed.comment + "", "after dimen,before integer");
+      assert.equal(R.string.app_name.comment + "", "after integer,before string,after string");
 
       done();
     });
@@ -76,4 +81,11 @@ function checkAll(R) {
   assert.ok(R.dimen);
   assert.ok(R.integer);
   assert.ok(R.string);
+
+  assert.equal(R.bool.screen_small, true);
+  assert.equal(R.bool.adjust_view_bounds, false);
+  assert.equal(R.color.colorPrimary + "", "#3F51B5");
+  assert.equal(R.dimen.activity_horizontal_margin, "16dp");
+  assert.equal(R.integer.max_speed, 75);
+  assert.equal(R.string.app_name, "MyApp");
 }

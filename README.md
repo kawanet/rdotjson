@@ -75,6 +75,10 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 `--space=2` - JSON indent. default: 2
 
+`--includeComments` - include postpositive XML comments located after elements
+
+`--includeComments=pre` - include prepositive XML comments located before elements
+
 `-` - Input XML from STDIN
 
 ### CLI Formatters

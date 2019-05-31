@@ -18,11 +18,31 @@ rdotjson(xml, function(err, R) {
 });
 ```
 
+### XML
+
+```xml
+<resources>
+    <string name="app_name">MyApp</string>
+    <string name="action_settings">Settings</string>
+</resources>
+```
+
+### JSON
+
+```json
+{
+  "string": {
+    "app_name": "MyApp",
+    "action_settings": "Settings"
+  }
+}
+```
+
 ## SUPPORTED TYPES
 
 - `R.bool` - Boolean
-- `R.color` - String e.g. "#FFFFFF"
-- `R.dimen` - String e.g. "16dp"
+- `R.color` - String e.g. `#FFFFFF`
+- `R.dimen` - String e.g. `16dp`
 - `R.integer` - Integer
 - `R.array` - Array
 - `R.string` - String
@@ -36,6 +56,15 @@ rdotjson(xml, options, callback);
 - `xml` {String|Buffer|Stream}
 - `options` {Object}
 - `callback` {Function} `function(err, R) {...}`
+
+### Option Parameters
+
+- `{attr: true}` - Add `attr` property which includes XML attributes.
+- `{exclude: '*_android'}` - Key names to exclude. Wildcard available.
+- `{xml: true}` - Preserve raw XML strings, instead of plain text parsed
+- `{comment: 'post'}` - include postpositive XML comments located after elements
+- `{comment: 'pre'}` - include prepositive XML comments located before elements
+- `{comment: 'right'}` - include right-side XML comment within the same line
 
 ### JSON Formatter
 
@@ -67,23 +96,21 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 ### CLI Options
 
-`--exclude='*_android'` - Key name to exclude. Wildcard available.
-
-`--format=json` - Output format. default: json
-
-`--output=R.json` - Output filename. default: STDOUT
-
-`--space=2` - JSON indent. default: 2
-
-`-` - Input XML from STDIN
+- `--exclude='*_android'` - Key names to exclude. Wildcard available.
+- `--format=json` - Output format. default: `json`
+- `--comment=post` - include postpositive XML comments located after elements
+- `--comment=pre` - include prepositive XML comments located before elements
+- `--comment=right` - include right-side XML comment within the same line
+- `--output=R.json` - Output filename. default: `STDOUT`
+- `--space=2` - JSON indent. default: 2
+- `--xml` - Preserve raw XML strings, instead of plain text parsed
+- `-` - Input XML from `STDIN`
 
 ### CLI Formatters
 
-`--format=json --output=R.json` - JSON
-
-`--format=csv --output=R.csv` - CSV
-
-`--format=rdotswift --output=R.swift` - SWIFT ([rdotswift](https://github.com/kawanet/rdotswift) module required)
+- `--format=json --output=R.json` - JSON
+- `--format=csv --output=R.csv` - CSV
+- `--format=rdotswift --output=R.swift` - Swift ([rdotswift](https://github.com/kawanet/rdotswift) module required)
 
 ## INSTALL
 
@@ -104,7 +131,7 @@ npm install -g rdotjson
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 Yusuke Kawasaki
+Copyright (c) 2016-2019 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

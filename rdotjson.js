@@ -43,14 +43,69 @@ function rtojson(xml, options, callback) {
   var exclude = options.exclude && regexpForWildcard(options.exclude);
 
   var $ = cheerio.load(xml, {
-    normalizeWhitespace: true,
+    normalizeWhitespace: false,
     xmlMode: true
   });
 
   var R = options.R || {};
-  $("resources > *").each(function(idx, e) {
+  // prepositive XML comments
+  var preComments = (options.comment === "pre");
+  // postpositive XML comments
+  var postComments = (options.comment === "post");
+  // right-side XML comment within the same line
+  var rightComment = (options.comment === "right");
+
+  var includeComments = preComments || postComments || rightComment;
+  var type;
+  var hash;
+  var name;
+
+  $("resources").each(function(idx, resources) {
+    var childNodes = resources && resources.childNodes;
+    if (!childNodes) return;
+
+    var comments;
+
+    [].forEach.call(childNodes, function(e) {
+      if (includeComments && e.type === "comment") {
+        var comment = e.data.trim();
+        if (!preComments && hash && name) {
+          appendComment(comment);
+        } else if (!rightComment) {
+          if (!comments) comments = [];
+          comments.push(comment);
+        }
+      }
+
+      // ignore following comments after newline
+      if (rightComment && e.type === "text") {
+        if (e.data.indexOf("\n") > -1) {
+          hash = name = null;
+        }
+      }
+
+      if (e.type !== "tag") return;
+
+      eachItem(e);
+
+      if (comments && hash && name) {
+        comments.forEach(appendComment);
+      }
+
+      comments = null;
+    });
+
+    if (comments && hash && name) {
+      comments.forEach(appendComment);
+    }
+  });
+
+  if (callback) return callback(null, R);
+
+  function eachItem(e) {
+    hash = name = null;
     var $e = $(e);
-    var type = $e.attr("type") || e.name;
+    type = $e.attr("type") || e.name;
     if (!type) return;
     var group = type;
     var array = type.match(/-array$/);
@@ -58,27 +113,96 @@ function rtojson(xml, options, callback) {
       group = "array";
       type = type.replace(/-array$/, "");
     }
-    var name = $e.attr("name");
+    name = $e.attr("name");
     if (exclude && name.match(exclude)) return;
-    var hash = R[group] || (R[group] = {});
+    hash = R[group] || (R[group] = {});
     var val;
     if (array) {
       val = [];
       $e.find("item").each(function(idx, item) {
-        val.push(filter($(item).text()));
+        val.push(getValue($(item)));
       });
     } else {
-      val = filter($e.text());
+      val = getValue($e);
     }
     hash[name] = val;
-
-    function filter(val) {
-      var f = model[type];
-      return f ? f(val) : val;
-    }
-  });
+  }
 
   if (callback) return callback(null, R);
+
+  function getValue($item) {
+    var val;
+
+    if (type === "string" && options.xml) {
+      val = $item.html();
+    } else {
+      val = getText($item);
+    }
+
+    if (options.attr) {
+      val = addAttributes(val, $item);
+    }
+
+    return val;
+  }
+
+  function getText($item) {
+    var val = $item.text();
+    var filter = model[type];
+    return filter ? filter(val) : val;
+  }
+
+  function appendComment(comment) {
+    if (!comment) return;
+    hash[name] = addComment(hash[name], comment);
+  }
+}
+
+function wrapObject(val) {
+  /* jshint -W053 */
+
+  if ("boolean" === typeof val) {
+    // W053: Do not use Boolean as a constructor.
+    val = new Boolean(val);
+  } else if ("number" === typeof val) {
+    // W053: Do not use Number as a constructor.
+    val = new Number(val);
+  } else if ("string" === typeof val) {
+    // W053: Do not use String as a constructor.
+    val = new String(val);
+  }
+
+  return val;
+}
+
+function addComment(val, comment) {
+  val = wrapObject(val);
+
+  if ("object" === typeof val) {
+    var prev = val.comment;
+    if (prev instanceof Array) {
+      prev.push(comment);
+    } else if ("string" === typeof prev) {
+      val.comment = [prev, comment];
+    } else {
+      val.comment = comment;
+    }
+  }
+
+  return val;
+}
+
+function addAttributes(val, $item) {
+  var attr = $item.attr();
+
+  if (Object.keys(attr).length) {
+    val = wrapObject(val);
+    if ("object" === typeof val) {
+      val.attr = attr;
+    }
+  }
+
+  return val;
 }
 
 /**

@@ -148,6 +148,13 @@ function rtojson(xml, options, callback) {
 
   function getText($item) {
     var val = $item.text();
+
+    // leading spaces
+    val = val.replace(/^\s+/, "");
+
+    // trailing spaces
+    val = val.replace(/\s+$/, "");
+
     var filter = model[type];
     return filter ? filter(val) : val;
   }

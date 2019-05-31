@@ -2,12 +2,6 @@
 
 function string(val) {
   if (typeof val === "string") {
-    // leading spaces
-    val = val.replace(/^\s+/, "");
-
-    // trailing spaces
-    val = val.replace(/\s+$/, "");
-
     // quote
     if (val[0] === '"' && val[val.length - 1] === '"') {
       val = val.substr(1, val.length - 2);

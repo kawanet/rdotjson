@@ -1,0 +1,25 @@
+<resources>
+    <bool name="screen_small">
+        true
+    </bool>
+
+    <bool name="adjust_view_bounds">
+        false
+    </bool>
+
+    <color name="colorPrimary">
+        #3F51B5
+    </color>
+
+    <dimen name="activity_horizontal_margin">
+        16dp
+    </dimen>
+
+    <integer name="max_speed">
+        75
+    </integer>
+
+    <string name="app_name">
+        MyApp
+    </string>
+</resources>

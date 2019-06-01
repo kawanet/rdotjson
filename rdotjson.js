@@ -133,7 +133,7 @@ function rtojson(xml, options, callback) {
   function getValue($item) {
     var val;
 
-    if (type === "string" && options.xml) {
+    if (options.xml) {
       val = $item.html();
     } else {
       val = getText($item);

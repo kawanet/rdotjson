@@ -48,7 +48,9 @@ describe(TITLE, function() {
       assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after dimen,before integer");
       assert.equal(R.integer.max_speed.comment + "", "after integer,before string");
       assert.equal(R.string.app_name.comment + "", "between string");
-      assert.equal(R.string.action_settings.comment + "", "after string");
+      assert.equal(R.string.action_settings.comment + "", "after string,before array");
+      assert.equal(R.array.bits.comment + "", "between array");
+      assert.equal(R.array.planets_array.comment + "", "after array");
 
       var C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true,"before bool,between bool"');
@@ -71,7 +73,9 @@ describe(TITLE, function() {
       assert.equal(R.dimen.activity_horizontal_margin.comment + "", "after color,before dimen");
       assert.equal(R.integer.max_speed.comment + "", "after dimen,before integer");
       assert.equal(R.string.app_name.comment + "", "after integer,before string");
-      assert.equal(R.string.action_settings.comment + "", "between string,after string");
+      assert.equal(R.string.action_settings.comment + "", "between string");
+      assert.equal(R.array.bits.comment + "", "after string,before array");
+      assert.equal(R.array.planets_array.comment + "", "between array,after array");
 
       var C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true,before bool');
@@ -88,11 +92,14 @@ describe(TITLE, function() {
 
       assert.equal(jsonFormat(R), jsonString);
 
-      assert.equal(R.bool.screen_small.comment, "between bool", "R.bool.screen_small.comment");
-      assert.equal(R.bool.adjust_view_bounds.comment, null, "R.bool.adjust_view_bounds.comment");
+      assert.equal(R.bool.screen_small.comment, "between bool");
+      assert.equal(R.bool.adjust_view_bounds.comment, null);
 
-      assert.equal(R.string.app_name.comment, "between string", "R.string.app_name.comment");
-      assert.equal(R.string.action_settings.comment, null, "R.string.action_settings.comment");
+      assert.equal(R.string.app_name.comment, "between string");
+      assert.equal(R.string.action_settings.comment, null);
+
+      assert.equal(R.array.bits.comment, "between array");
+      assert.equal(R.array.planets_array.comment, null);
 
       var C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true,between bool');

@@ -21,4 +21,14 @@
     <string name="app_name">MyApp</string> <!-- between string -->
     <string name="action_settings">Settings</string>
     <!-- after string -->
+
+    <!-- before array -->
+    <integer-array name="bits">
+        <item>4</item>
+    </integer-array> <!-- between array -->
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+    </string-array>
+    <!-- after array -->
 </resources>

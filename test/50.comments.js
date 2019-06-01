@@ -11,7 +11,6 @@ describe(TITLE, function() {
   var xml;
   var jsonFormat;
   var jsonString;
-  var csvFormat;
 
   it("comments.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/comments.xml");
@@ -28,8 +27,9 @@ describe(TITLE, function() {
       jsonString = jsonFormat(R);
       assert.ok(jsonString);
 
-      csvFormat = rdotjson.format("csv");
-      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false');
+      var C = getCSVRow(R, 3);
+      assert.equal(C.bool.screen_small, 'bool,screen_small,true');
+      assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false');
 
       done();
     });
@@ -50,7 +50,9 @@ describe(TITLE, function() {
       assert.equal(R.string.app_name.comment + "", "between string");
       assert.equal(R.string.action_settings.comment + "", "after string");
 
-      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false,"after bool,before color"');
+      var C = getCSVRow(R, 3);
+      assert.equal(C.bool.screen_small, 'bool,screen_small,true,"before bool,between bool"');
+      assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false,"after bool,before color"');
 
       done();
     });
@@ -71,7 +73,9 @@ describe(TITLE, function() {
       assert.equal(R.string.app_name.comment + "", "after integer,before string");
       assert.equal(R.string.action_settings.comment + "", "between string,after string");
 
-      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false,between bool');
+      var C = getCSVRow(R, 3);
+      assert.equal(C.bool.screen_small, 'bool,screen_small,true,before bool');
+      assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false,between bool');
 
       done();
     });
@@ -90,16 +94,14 @@ describe(TITLE, function() {
       assert.equal(R.string.app_name.comment, "between string", "R.string.app_name.comment");
       assert.equal(R.string.action_settings.comment, null, "R.string.action_settings.comment");
 
-      assert.equal(firstRow(csvFormat(R)), 'bool,adjust_view_bounds,false');
+      var C = getCSVRow(R, 3);
+      assert.equal(C.bool.screen_small, 'bool,screen_small,true,between bool');
+      assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false');
 
       done();
     });
   });
 });
-
-function firstRow(csv) {
-  return csv.split(/\r?\n/).shift();
-}
 
 function checkAll(R) {
   assert.ok(R);
@@ -116,4 +118,18 @@ function checkAll(R) {
   assert.equal(R.dimen.activity_horizontal_margin, "16dp");
   assert.equal(R.integer.max_speed, 75);
   assert.equal(R.string.app_name, "MyApp");
+}
+
+function getCSVRow(C) {
+  var format = rdotjson.format("csv");
+  var csv = format(C);
+  return csv.split(/[\r\n]+/).reduce(reduce, {});
+
+  function reduce(R, row) {
+    var col = row.split(",");
+    var type = col[0];
+    var group = R[type] || (R[type] = {});
+    group[col[1]] = row;
+    return R;
+  }
 }

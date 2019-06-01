@@ -29,6 +29,10 @@ describe(TITLE, function() {
 
       assert.equal(R.string.app_name, "MyApp");
 
+      assert.equal(R.array.bits[0], 4);
+
+      assert.equal(R.array.planets_array[0], "Mercury");
+
       done();
     });
   });
@@ -48,6 +52,10 @@ describe(TITLE, function() {
       assert.strictEqual(esc(R.integer.max_speed), ".75.");
 
       assert.strictEqual(esc(R.string.app_name), ".MyApp.");
+
+      assert.strictEqual(esc(R.array.bits[0]), ".4.");
+
+      assert.strictEqual(esc(R.array.planets_array[0]), ".Mercury.");
 
       done();
     });

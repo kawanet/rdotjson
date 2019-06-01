@@ -22,4 +22,16 @@
     <string name="app_name">
         MyApp
     </string>
+
+    <integer-array name="bits">
+        <item>
+            4
+        </item>
+    </integer-array>
+
+    <string-array name="planets_array">
+        <item>
+            Mercury
+        </item>
+    </string-array>
 </resources>

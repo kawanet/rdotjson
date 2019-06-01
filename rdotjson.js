@@ -65,6 +65,7 @@ function rtojson(xml, options, callback) {
   var type;
   var hash;
   var name;
+  var commentAttr;
 
   $("resources").each(function(idx, resources) {
     var childNodes = resources && resources.childNodes;
@@ -94,7 +95,9 @@ function rtojson(xml, options, callback) {
 
       eachItem(e);
 
-      if (comments && hash && name) {
+      if (includeComments && commentAttr && hash && name) {
+        appendComment(commentAttr);
+      } else if (comments && hash && name) {
         comments.forEach(appendComment);
       }
 
@@ -119,6 +122,7 @@ function rtojson(xml, options, callback) {
       group = "array";
     }
     name = $e.attr("name");
+    commentAttr = $e.attr("comment");
     if (exclude && name.match(exclude)) return;
     hash = R[group] || (R[group] = {});
     var val;

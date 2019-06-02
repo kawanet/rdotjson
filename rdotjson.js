@@ -66,7 +66,7 @@ function rtojson(xml, options, callback) {
   var hash;
   var name;
 
-  $("resources").each(function(idx, resources) {
+  [].forEach.call($("resources"), function(resources) {
     var childNodes = resources && resources.childNodes;
     if (!childNodes) return;
 
@@ -108,38 +108,40 @@ function rtojson(xml, options, callback) {
 
   if (callback) return callback(null, R);
 
-  function eachItem(e) {
+  function eachItem(item) {
     hash = name = null;
-    var $e = $(e);
-    type = $e.attr("type") || e.name;
+
+    type = item.name;
     if (!type) return;
     var group = type;
     var array = type.match(/-array$/);
     if (array) {
       group = "array";
     }
-    name = $e.attr("name");
+    name = $(item).attr("name");
     if (exclude && name.match(exclude)) return;
     hash = R[group] || (R[group] = {});
     var val;
     if (array) {
       val = [];
-      $e.find("item").each(function(idx, item) {
-        val.push(getValue($(item)));
+      if (!item.childNodes) return;
+      [].forEach.call(item.childNodes, function(item) {
+        if (item.name !== "item") return;
+        val.push(getValue(item));
       });
     } else {
-      val = getValue($e);
+      val = getValue(item);
     }
     hash[name] = val;
   }
 
-  function getValue($item) {
+  function getValue(item) {
     var val;
 
     if (options.xml) {
-      val = $item.html();
+      val = $(item).html();
     } else {
-      val = getText($item);
+      val = getText(item);
     }
 
     if (options.objectMode) {
@@ -147,14 +149,14 @@ function rtojson(xml, options, callback) {
     }
 
     if (options.attr) {
-      val = addAttributes(val, $item);
+      val = addAttributes(val, $(item));
     }
 
     return val;
   }
 
-  function getText($item) {
-    var val = getString($item);
+  function getText(item) {
+    var val = getString(item);
 
     // leading spaces
     val = val.replace(/^\s+/, "");
@@ -172,9 +174,9 @@ function rtojson(xml, options, callback) {
   }
 }
 
-function getString($item) {
+function getString(item) {
   var array = [];
-  parseNodes($item);
+  parseNodes(item.childNodes);
   return array.join("");
 
   function parseNodes(nodes) {

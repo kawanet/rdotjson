@@ -24,17 +24,21 @@ function csv(R, options) {
 
       if (val instanceof Array) {
         val.forEach(function(item, idx) {
-          var row = [type, key, item];
+          var row = [type, key, getValue(item)];
           if (comment && !idx) row.push(comment);
           rows.push(row);
         });
       } else {
-        var row = [type, key, val];
+        var row = [type, key, getValue(val)];
         if (comment) row.push(comment);
         rows.push(row);
       }
     });
   });
+
+  function getValue(val) {
+    return options.objectMode ? val.value : val;
+  }
 
   return table_to_csv(rows);
 }

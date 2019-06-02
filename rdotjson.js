@@ -142,6 +142,10 @@ function rtojson(xml, options, callback) {
       val = getText($item);
     }
 
+    if (options.objectMode) {
+      val = {value: val};
+    }
+
     if (options.attr) {
       val = addAttributes(val, $item);
     }

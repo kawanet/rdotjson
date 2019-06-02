@@ -14,7 +14,7 @@ const xml = fs.readFileSync("strings.xml");
 
 rdotjson(xml, function(err, R) {
   if (err) throw err;
-  console.log(R.string.app_name);
+  console.log(R.string.app_name); // => "MyApp"
 });
 ```
 
@@ -65,6 +65,7 @@ rdotjson(xml, options, callback);
 - `{comment: 'post'}` - include postpositive XML comments located after elements
 - `{comment: 'pre'}` - include prepositive XML comments located before elements
 - `{comment: 'right'}` - include right-side XML comment within the same line
+- `{objectMode: true}` - use plain object container: `{value: value}` instead of primitives
 
 ### JSON Formatter
 
@@ -78,6 +79,29 @@ const json = format(R, {space: 0}); // => {"string":{"app_name":"MyApp", ... }}
 ```js
 const format = rdotjson.format("csv");
 const csv = format(R); // => "string,app_name,MyApp" ...
+```
+
+### Object Mode
+
+```js
+rdotjson(xml, {objectMode: true}, function(err, R) {
+  if (err) throw err;
+  console.log(R.string.app_name.value); // => "MyApp"
+  console.log(JSON.stringify(R, null, 2));
+});
+```
+
+```json
+{
+  "string": {
+    "app_name": {
+      "value": "MyApp"
+    },
+    "action_settings": {
+      "value": "Settings"
+    }
+  }
+}
 ```
 
 ## CLI
@@ -102,6 +126,7 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 - `--comment=pre` - include prepositive XML comments located before elements
 - `--comment=right` - include right-side XML comment within the same line
 - `--output=R.json` - Output filename. default: `STDOUT`
+- `--objectMode` - use a plain object container `{value: value}` instead of primitives 
 - `--space=2` - JSON indent. default: 2
 - `--xml` - Preserve raw XML strings, instead of plain text parsed
 - `-` - Input XML from `STDIN`

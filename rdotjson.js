@@ -2,6 +2,7 @@
 
 var cheerio = require("cheerio");
 var isReadableStream = require("is-stream").readable;
+var getString = require("./lib/get-string").getString;
 var readFromStream = require("./gist/read-from-stream");
 var regexpForWildcard = require("./gist/regexp-for-wildcard");
 
@@ -10,14 +11,11 @@ exports.format = format;
 
 var modelBool = require("./model/bool");
 var modelInteger = require("./model/integer");
-var modelString = require("./model/string");
 
 var model = {
   "integer-array": modelInteger,
-  "string-array": modelString,
   bool: modelBool,
-  integer: modelInteger,
-  string: modelString
+  integer: modelInteger
 };
 
 /**
@@ -158,12 +156,6 @@ function rtojson(xml, options, callback) {
   function getText(item) {
     var val = getString(item);
 
-    // leading spaces
-    val = val.replace(/^\s+/, "");
-
-    // trailing spaces
-    val = val.replace(/\s+$/, "");
-
     var filter = model[type];
     return filter ? filter(val) : val;
   }
@@ -171,25 +163,6 @@ function rtojson(xml, options, callback) {
   function appendComment(comment) {
     if (!comment) return;
     hash[name] = addComment(hash[name], comment);
-  }
-}
-
-function getString(item) {
-  var array = [];
-  parseNodes(item.childNodes);
-  return array.join("");
-
-  function parseNodes(nodes) {
-    if (!nodes) return;
-
-    [].forEach.call(nodes, function(node, idx) {
-      if (node.type === "text") {
-        var str = node.data;
-        array.push(str);
-      } else {
-        parseNodes(node.childNodes);
-      }
-    });
   }
 }
 

@@ -18,7 +18,7 @@
     <string name="string_with_tag">  FOO  <b>  BAR  </b>  BUZ  </string> <!-- '.FOO..BAR..BUZ.' -->
     <string name="cdata_with_tag"><![CDATA[  FOO  <b>  BAR  </b>  BUZ  ]]></string> <!-- 'FOO..<b>..BAR..</b>..BUZ' -->
 
-    <string name="string_with_tag_in_quote">  "<b>  FOO  BAR  </b>"  </string> <!-- '..FOO.BAR...' -->
-    <string name="string_with_quote_in_tag">  <b>  "FOO  BAR"  </b>  </string> <!-- '..FOO..BAR..' -->
+    <string name="string_with_tag_in_quote">  "[  <b>  FOO  BAR  </b>  ]"  </string> <!-- '.[...FOO.BAR..]..' -->
+    <string name="string_with_quote_in_tag">  <b>  "[  FOO  BAR  ]"  </b>  </string> <!-- '..[..FOO..BAR..]..' -->
 
 </resources>

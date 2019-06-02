@@ -9,13 +9,10 @@ var regexpForWildcard = require("./gist/regexp-for-wildcard");
 var exports = module.exports = rtojson;
 exports.format = format;
 
-var modelBool = require("./model/bool");
-var modelInteger = require("./model/integer");
-
-var model = {
-  "integer-array": modelInteger,
-  bool: modelBool,
-  integer: modelInteger
+var typeFilter = {
+  "integer-array": Math.round,
+  bool: isTrue,
+  integer: Math.round
 };
 
 /**
@@ -156,7 +153,7 @@ function rtojson(xml, options, callback) {
   function getText(item) {
     var val = getString(item);
 
-    var filter = model[type];
+    var filter = typeFilter[type];
     return filter ? filter(val) : val;
   }
 
@@ -190,6 +187,10 @@ function addAttributes(val, $item) {
   }
 
   return val;
+}
+
+function isTrue(val) {
+  return (val + "" === "true");
 }
 
 /**

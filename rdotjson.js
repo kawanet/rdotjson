@@ -154,7 +154,7 @@ function rtojson(xml, options, callback) {
   }
 
   function getText($item) {
-    var val = $item.text();
+    var val = getString($item);
 
     // leading spaces
     val = val.replace(/^\s+/, "");
@@ -169,6 +169,25 @@ function rtojson(xml, options, callback) {
   function appendComment(comment) {
     if (!comment) return;
     hash[name] = addComment(hash[name], comment);
+  }
+}
+
+function getString($item) {
+  var array = [];
+  parseNodes($item);
+  return array.join("");
+
+  function parseNodes(nodes) {
+    if (!nodes) return;
+
+    [].forEach.call(nodes, function(node, idx) {
+      if (node.type === "text") {
+        var str = node.data;
+        array.push(str);
+      } else {
+        parseNodes(node.childNodes);
+      }
+    });
   }
 }
 

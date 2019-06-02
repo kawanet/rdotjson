@@ -14,7 +14,7 @@ const xml = fs.readFileSync("strings.xml");
 
 rdotjson(xml, function(err, R) {
   if (err) throw err;
-  console.log(R.string.app_name);
+  console.log(R.string.app_name); // => "MyApp"
 });
 ```
 
@@ -40,12 +40,12 @@ rdotjson(xml, function(err, R) {
 
 ## SUPPORTED TYPES
 
-- `R.bool` - Boolean
-- `R.color` - String e.g. `#FFFFFF`
-- `R.dimen` - String e.g. `16dp`
-- `R.integer` - Integer
-- `R.array` - Array
-- `R.string` - String
+- `R.array` - Array: `<string-array name="key"><item>string</item></string-array>`
+- `R.bool` - Boolean: `<bool name="key">true</bool>`
+- `R.color` - String: `<color name="key">#3F51B5</color>`
+- `R.dimen` - String: `<dimen name="key">16dp</dimen>`
+- `R.integer` - Number: `<integer name="key">75</integer>`
+- `R.string` - String: `<string name="key">string</string>`
 
 ## JAVASCRIPT API
 
@@ -53,31 +53,70 @@ rdotjson(xml, function(err, R) {
 rdotjson(xml, options, callback);
 ```
 
-- `xml` {String|Buffer|Stream}
-- `options` {Object}
-- `callback` {Function} `function(err, R) {...}`
+- `xml` {String|Buffer|Stream} - required.
+- `options` {Object} - optional.
+- `callback` {Function} - `function(err, R) {...}`
 
 ### Option Parameters
 
-- `{attr: true}` - Add `attr` property which includes XML attributes.
-- `{exclude: '*_android'}` - Key names to exclude. Wildcard available.
-- `{xml: true}` - Preserve raw XML strings, instead of plain text parsed
-- `{comment: 'post'}` - include postpositive XML comments located after elements
-- `{comment: 'pre'}` - include prepositive XML comments located before elements
-- `{comment: 'right'}` - include right-side XML comment within the same line
+- `{attr: true}` - add `attr` property which includes XML attributes.
+- `{comment: 'post'}` - include postpositive XML comments located after elements.
+- `{comment: 'pre'}` - include prepositive XML comments located before elements.
+- `{comment: 'right'}` - include right-side XML comment within the same line.
+- `{exclude: '*_android'}` - specify key names to exclude. Wildcard available.
+- `{objectMode: true}` - use plain object container: `{value: value}` instead of primitives.
+- `{xml: true}` - preserve raw XML strings, instead of plain text parsed.
+
+### Object Mode
+
+```js
+rdotjson(xml, {objectMode: true}, function(err, R) {
+  if (err) throw err;
+  console.log(R.string.app_name.value); // => "MyApp"
+  console.log(JSON.stringify(R, null, 2));
+});
+```
+
+```json
+{
+  "string": {
+    "app_name": {
+      "value": "MyApp"
+    },
+    "action_settings": {
+      "value": "Settings"
+    }
+  }
+}
+```
+
+## FORMATTERS
+
+Emebed formatters `json` and `csv` available. 
 
 ### JSON Formatter
 
 ```js
-const format = rdotjson.format("json");
-const json = format(R, {space: 0}); // => {"string":{"app_name":"MyApp", ... }}
+rdotjson(xml, function(err, R) {
+  if (err) throw err;
+  const format = rdotjson.format("json");
+  const json = format(R, {space: 0});
+  console.log(json);
+  // => {"string":{"app_name":"MyApp","action_settings":"Settings"}}
+});
 ```
 
 ### CSV Formatter
 
 ```js
-const format = rdotjson.format("csv");
-const csv = format(R); // => "string,app_name,MyApp" ...
+rdotjson(xml, function(err, R) {
+  if (err) throw err;
+  const format = rdotjson.format("csv");
+  const csv = format(R);
+  console.log(csv);
+  // => string,action_settings,Settings
+  //    string,app_name,MyApp
+});
 ```
 
 ## CLI
@@ -96,36 +135,29 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 ### CLI Options
 
-- `--exclude='*_android'` - Key names to exclude. Wildcard available.
-- `--format=json` - Output format. default: `json`
 - `--comment=post` - include postpositive XML comments located after elements
 - `--comment=pre` - include prepositive XML comments located before elements
 - `--comment=right` - include right-side XML comment within the same line
-- `--output=R.json` - Output filename. default: `STDOUT`
+- `--exclude='*_android'` - specify key names to exclude. Wildcard available.
+- `--format=json` - specify output format. default: `json`
+- `--objectMode` - use a plain object container `{value: value}` instead of primitives 
+- `--output=R.json` - output filename. default: `STDOUT`
 - `--space=2` - JSON indent. default: 2
-- `--xml` - Preserve raw XML strings, instead of plain text parsed
-- `-` - Input XML from `STDIN`
+- `--xml` - preserve raw XML strings, instead of plain text parsed
+- `-` - input XML from `STDIN`
 
 ### CLI Formatters
 
-- `--format=json --output=R.json` - JSON
 - `--format=csv --output=R.csv` - CSV
+- `--format=json --output=R.json` - JSON
 - `--format=rdotswift --output=R.swift` - Swift ([rdotswift](https://github.com/kawanet/rdotswift) module required)
-
-## INSTALL
-
-```sh
-npm install -g rdotjson
-```
-
-## REPOSITORY
-
-- [https://github.com/kawanet/rdotjson](https://github.com/kawanet/rdotjson)
 
 ## SEE ALSO
 
+- [https://github.com/kawanet/rdotjson](https://github.com/kawanet/rdotjson)
 - [https://www.npmjs.com/package/rdotswift](https://www.npmjs.com/package/rdotswift)
 - [https://qiita.com/kawanet/items/f48ef1f2e264982912f4](https://qiita.com/kawanet/items/f48ef1f2e264982912f4)
+- [https://developer.android.com/guide/topics/resources/string-resource](https://developer.android.com/guide/topics/resources/string-resource)
 
 ## LICENSE
 

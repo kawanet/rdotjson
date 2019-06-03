@@ -43,8 +43,8 @@ function checkAsString(R) {
   assert.equal(R.integer.max_speed + "", "75");
   assert.equal(R.string.app_name + "", "MyApp");
   assert.equal(R.string.action_settings + "", "Settings");
-  // assert.equal(R.array.bits[0] + "", 4);
-  // assert.equal(R.array.planets_array[0] + "", "Mercury");
+  assert.equal(R.array.bits[0] + "", 4);
+  assert.equal(R.array.planets_array[0] + "", "Mercury");
 }
 
 /**
@@ -57,8 +57,14 @@ function parseCSV(csv) {
   function reduce(R, row) {
     var col = row.split(",");
     var type = col[0];
+    var name = col[1];
     var group = R[type] || (R[type] = {});
-    group[col[1]] = [col[2]];
+    if (type === "array") {
+      var array = group[name] || (group[name] = []);
+      array.push(col[2]);
+    } else {
+      group[name] = col[2];
+    }
     return R;
   }
 }

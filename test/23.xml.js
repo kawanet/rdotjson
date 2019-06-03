@@ -26,9 +26,9 @@ describe(TITLE, function() {
       assert.ok(R.string);
 
       // note: \\n is unescaped
-      assert.equal(R.string.activation_warning, 'Some text: Text.\n\nSome more text.');
+      assert.equal(R.string.activation_warning, ' Some text: Text.\n\nSome more text.');
 
-      assert.equal(R.string.cancel, 'Cancel');
+      assert.equal(R.string.cancel, ' Cancel ');
 
       assert.equal(R.string.default_latitude, '40.7831');
 
@@ -36,7 +36,7 @@ describe(TITLE, function() {
 
       assert.equal(R.string.detail_developer_mode_on, 'Text. Some more text.');
 
-      assert.equal(R.string.permission_justification_required_warning, 'You have declined a required permission. Exiting.');
+      assert.equal(R.string.permission_justification_required_warning, ' You have declined a required permission. Exiting. ');
       done();
     });
   });

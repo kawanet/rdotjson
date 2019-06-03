@@ -21,12 +21,6 @@ describe(TITLE, function() {
       assert.equal(array[0], "Mercury");
       assert.equal(array[3], "Mars");
 
-      var csv = rdotjson.format("csv")(R);
-      var cnt = csv.split("\n").filter(function(row) {
-        return row.indexOf("array,planets_array,M") === 0;
-      }).length;
-      assert.equal(cnt, 2);
-
       done();
     });
   });

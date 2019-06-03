@@ -20,10 +20,6 @@ describe(TITLE, function() {
       assert.equal(typeof R.bool.adjust_view_bounds, "boolean");
       assert.equal(R.bool.adjust_view_bounds, false);
 
-      var csv = rdotjson.format("csv")(R);
-      assert.ok(csv);
-      assert.ok(csv.indexOf("bool,screen_small,true") > -1);
-      assert.ok(csv.indexOf("bool,adjust_view_bounds,false") > -1);
       done();
     });
   });

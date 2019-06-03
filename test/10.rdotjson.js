@@ -64,35 +64,6 @@ describe(TITLE, function() {
       rdotjson(xml, option, next);
     }
   });
-
-  it("format.json", function(done) {
-    assert.ok(RR);
-    var format = rdotjson.format("json");
-    assert.ok(format);
-    var json = format(RR);
-    assert.ok(json);
-    var R = JSON.parse(json);
-    checkAll(R, done);
-  });
-
-  it("format.csv", function(done) {
-    assert.ok(RR);
-    var format = rdotjson.format("csv");
-    assert.ok(format);
-    var csv = format(RR);
-    var check = csv.split(/[\r\n]+/).reduce(reduce, {});
-    assert.equal(check.color_colorPrimary, '#3F51B5');
-    assert.equal(check.dimen_activity_horizontal_margin, '16dp');
-    assert.equal(check.string_app_name, 'MyApp');
-    done();
-
-    function reduce(res, row) {
-      var cols = row.split(",");
-      var key = cols.slice(0, 2).join("_");
-      res[key] = cols[2];
-      return res;
-    }
-  });
 });
 
 function checkAll(R, callback) {
@@ -105,4 +76,3 @@ function checkAll(R, callback) {
   assert.equal(R.string.app_name, "MyApp");
   callback();
 }
-

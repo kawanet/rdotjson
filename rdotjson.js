@@ -2,22 +2,17 @@
 
 var cheerio = require("cheerio");
 var isReadableStream = require("is-stream").readable;
+var getString = require("./lib/get-string").getString;
 var readFromStream = require("./gist/read-from-stream");
 var regexpForWildcard = require("./gist/regexp-for-wildcard");
 
 var exports = module.exports = rtojson;
 exports.format = format;
 
-var modelBool = require("./model/bool");
-var modelInteger = require("./model/integer");
-var modelString = require("./model/string");
-
-var model = {
-  "integer-array": modelInteger,
-  "string-array": modelString,
-  bool: modelBool,
-  integer: modelInteger,
-  string: modelString
+var typeFilter = {
+  "integer-array": Math.round,
+  bool: isTrue,
+  integer: Math.round
 };
 
 /**
@@ -66,7 +61,7 @@ function rtojson(xml, options, callback) {
   var hash;
   var name;
 
-  $("resources").each(function(idx, resources) {
+  [].forEach.call($("resources"), function(resources) {
     var childNodes = resources && resources.childNodes;
     if (!childNodes) return;
 
@@ -76,6 +71,7 @@ function rtojson(xml, options, callback) {
       if (includeComments && e.type === "comment") {
         var comment = e.data.trim();
         if (!preComments && hash && name) {
+          // right or post comments
           appendComment(comment);
         } else if (!rightComment) {
           if (!comments) comments = [];
@@ -94,6 +90,7 @@ function rtojson(xml, options, callback) {
 
       eachItem(e);
 
+      // pre comments
       if (comments && hash && name) {
         comments.forEach(appendComment);
       }
@@ -101,6 +98,7 @@ function rtojson(xml, options, callback) {
       comments = null;
     });
 
+    // post comments
     if (comments && hash && name) {
       comments.forEach(appendComment);
     }
@@ -108,38 +106,48 @@ function rtojson(xml, options, callback) {
 
   if (callback) return callback(null, R);
 
-  function eachItem(e) {
+  function eachItem(item) {
     hash = name = null;
-    var $e = $(e);
-    type = $e.attr("type") || e.name;
+
+    type = item.name;
     if (!type) return;
+
     var group = type;
     var array = type.match(/-array$/);
     if (array) {
       group = "array";
     }
-    name = $e.attr("name");
+
+    name = $(item).attr("name");
+
     if (exclude && name.match(exclude)) return;
+
     hash = R[group] || (R[group] = {});
+
     var val;
     if (array) {
       val = [];
-      $e.find("item").each(function(idx, item) {
-        val.push(getValue($(item)));
+      if (!item.childNodes) return;
+      [].forEach.call(item.childNodes, function(item) {
+        if (item.name !== "item") return;
+        val.push(getValue(item));
       });
     } else {
-      val = getValue($e);
+      val = getValue(item);
     }
+
     hash[name] = val;
   }
 
-  function getValue($item) {
+  function getValue(item) {
     var val;
 
     if (options.xml) {
-      val = $item.html();
+      val = $(item).html();
     } else {
-      val = getText($item);
+      val = getString(item);
+      var filter = typeFilter[type];
+      if (filter) val = filter(val);
     }
 
     if (options.objectMode) {
@@ -147,23 +155,10 @@ function rtojson(xml, options, callback) {
     }
 
     if (options.attr) {
-      val = addAttributes(val, $item);
+      val = addAttributes(val, $(item).attr());
     }
 
     return val;
-  }
-
-  function getText($item) {
-    var val = $item.text();
-
-    // leading spaces
-    val = val.replace(/^\s+/, "");
-
-    // trailing spaces
-    val = val.replace(/\s+$/, "");
-
-    var filter = model[type];
-    return filter ? filter(val) : val;
   }
 
   function appendComment(comment) {
@@ -187,15 +182,17 @@ function addComment(val, comment) {
   return val;
 }
 
-function addAttributes(val, $item) {
-  var attr = $item.attr();
-
+function addAttributes(val, attr) {
   if (Object.keys(attr).length) {
     val = new Object(val);
     val.attr = attr;
   }
 
   return val;
+}
+
+function isTrue(val) {
+  return (val + "" === "true");
 }
 
 /**

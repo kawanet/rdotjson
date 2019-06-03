@@ -19,8 +19,6 @@ describe(TITLE, function() {
       assert.equal(R.integer.max_speed, 75);
       assert.equal(R.integer.min_speed, 5);
 
-      var csv = rdotjson.format("csv")(R);
-      assert.ok(csv);
       done();
     });
   });
@@ -39,8 +37,6 @@ describe(TITLE, function() {
       assert.equal(array[0], 4);
       assert.equal(array[3], 32);
 
-      var csv = rdotjson.format("csv")(R);
-      assert.ok(csv);
       done();
     });
   });

@@ -12,8 +12,8 @@ describe(TITLE, function() {
   var jsonFormat;
   var jsonString;
 
-  it("comments.xml", function(done) {
-    xml = fs.readFileSync(__dirname + "/values/comments.xml");
+  it("values.xml", function(done) {
+    xml = fs.readFileSync(__dirname + "/values/values.xml");
     assert.ok(xml);
     done();
   });

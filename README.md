@@ -143,6 +143,7 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 - `--objectMode` - use a plain object container `{value: value}` instead of primitives 
 - `--output=R.json` - output filename. default: `STDOUT`
 - `--space=2` - JSON indent. default: 2
+- `--version` - show rdotjson version.
 - `--xml` - preserve raw XML strings, instead of plain text parsed
 - `-` - input XML from `STDIN`
 

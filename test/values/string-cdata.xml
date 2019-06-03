@@ -1,0 +1,24 @@
+<resources>
+
+    <string name="string_with_space_only">   </string> <!-- '' -->
+    <string name="cdata_with_space_only"><![CDATA[  ]]></string> <!-- '' -->
+
+    <string name="string_without_quote">  FOO  BAR  </string> <!-- 'FOO.BAR' -->
+    <string name="cdata_without_quote"><![CDATA[  FOO  BAR  ]]></string> <!-- 'FOO..BAR' -->
+
+    <string name="string_with_quote">  "FOO  BAR"  </string> <!-- 'FOO..BAR' -->
+    <string name="cdata_with_quote"><![CDATA[  "FOO  BAR"  ]]></string> <!-- '"FOO..BAR"' -->
+
+    <string name="string_with_escaped_quote">  \"FOO  BAR\"  </string> <!-- '"FOO.BAR"' -->
+    <string name="cdata_with_escaped_quote"><![CDATA[  \"FOO  BAR\"  ]]></string> <!-- '"FOO..BAR"' -->
+
+    <string name="string_with_escaped_newline">  \nFOO  BAR\n  </string> <!-- '\nFOO.BAR\n' -->
+    <string name="cdata_with_escaped_newline"><![CDATA[  \nFOO  BAR\n  ]]></string> <!-- '\nFOO..BAR\n' -->
+
+    <string name="string_with_tag">  FOO  <b>  BAR  </b>  BUZ  </string> <!-- '.FOO..BAR..BUZ.' -->
+    <string name="cdata_with_tag"><![CDATA[  FOO  <b>  BAR  </b>  BUZ  ]]></string> <!-- 'FOO..<b>..BAR..</b>..BUZ' -->
+
+    <string name="string_with_tag_in_quote">  "[  <b>  FOO  BAR  </b>  ]"  </string> <!-- '.[...FOO.BAR..]..' -->
+    <string name="string_with_quote_in_tag">  <b>  "[  FOO  BAR  ]"  </b>  </string> <!-- '..[..FOO..BAR..]..' -->
+
+</resources>

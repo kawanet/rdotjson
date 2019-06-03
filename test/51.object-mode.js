@@ -10,10 +10,13 @@ var TITLE = __filename.replace(/^.*\//, "") + ":";
 describe(TITLE, function() {
   var xml;
 
-  it("{objectMode: false}", function(done) {
-    xml = fs.readFileSync(__dirname + "/values/comments.xml");
+  it("values.xml", function(done) {
+    xml = fs.readFileSync(__dirname + "/values/values.xml");
     assert.ok(xml);
+    done();
+  });
 
+  it("{objectMode: false}", function(done) {
     // this uses primitive wrapper object tricks such as String()
     var options = {objectMode: false, attr: true, comment: "right"};
 

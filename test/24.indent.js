@@ -10,10 +10,13 @@ var TITLE = __filename.replace(/^.*\//, "") + ":";
 describe(TITLE, function() {
   var xml;
 
-  it("indent.xml", function(done) {
-    xml = fs.readFileSync(__dirname + "/values/indent.xml");
+  it("values.xml", function(done) {
+    xml = fs.readFileSync(__dirname + "/values/values.xml");
     assert.ok(xml);
+    done();
+  });
 
+  it("{xml: false}", function(done) {
     rdotjson(xml, function(err, R) {
       assert.ok(!err, err);
 

@@ -9,6 +9,13 @@ main();
 
 function main() {
   var args = options["--"] || [];
+
+  if (options.version) {
+    console.log(require("./package.json").version);
+    process.exit(0);
+    return;
+  }
+
   if (!Object.keys(options).length) {
     var cmd = process.argv[1].replace(/^.*\//, "");
     return error("Usage: " + cmd + " app/src/main/res/values/*.xml --output=R.swift");

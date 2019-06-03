@@ -71,6 +71,7 @@ function rtojson(xml, options, callback) {
       if (includeComments && e.type === "comment") {
         var comment = e.data.trim();
         if (!preComments && hash && name) {
+          // right or post comments
           appendComment(comment);
         } else if (!rightComment) {
           if (!comments) comments = [];
@@ -89,6 +90,7 @@ function rtojson(xml, options, callback) {
 
       eachItem(e);
 
+      // pre comments
       if (comments && hash && name) {
         comments.forEach(appendComment);
       }
@@ -96,6 +98,7 @@ function rtojson(xml, options, callback) {
       comments = null;
     });
 
+    // post comments
     if (comments && hash && name) {
       comments.forEach(appendComment);
     }
@@ -108,14 +111,19 @@ function rtojson(xml, options, callback) {
 
     type = item.name;
     if (!type) return;
+
     var group = type;
     var array = type.match(/-array$/);
     if (array) {
       group = "array";
     }
+
     name = $(item).attr("name");
+
     if (exclude && name.match(exclude)) return;
+
     hash = R[group] || (R[group] = {});
+
     var val;
     if (array) {
       val = [];
@@ -127,6 +135,7 @@ function rtojson(xml, options, callback) {
     } else {
       val = getValue(item);
     }
+
     hash[name] = val;
   }
 
@@ -136,7 +145,9 @@ function rtojson(xml, options, callback) {
     if (options.xml) {
       val = $(item).html();
     } else {
-      val = getText(item);
+      val = getString(item);
+      var filter = typeFilter[type];
+      if (filter) val = filter(val);
     }
 
     if (options.objectMode) {
@@ -144,17 +155,10 @@ function rtojson(xml, options, callback) {
     }
 
     if (options.attr) {
-      val = addAttributes(val, $(item));
+      val = addAttributes(val, $(item).attr());
     }
 
     return val;
-  }
-
-  function getText(item) {
-    var val = getString(item);
-
-    var filter = typeFilter[type];
-    return filter ? filter(val) : val;
   }
 
   function appendComment(comment) {
@@ -178,9 +182,7 @@ function addComment(val, comment) {
   return val;
 }
 
-function addAttributes(val, $item) {
-  var attr = $item.attr();
-
+function addAttributes(val, attr) {
   if (Object.keys(attr).length) {
     val = new Object(val);
     val.attr = attr;

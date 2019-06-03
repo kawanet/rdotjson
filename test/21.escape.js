@@ -20,8 +20,6 @@ describe(TITLE, function() {
       assert.equal(R.string.good_example_3, 'This is a "good string".');
       assert.equal(R.string.bad_example_1, "This is a bad string.");
 
-      var csv = rdotjson.format("csv")(R);
-      assert.ok(csv);
       done();
     });
   });

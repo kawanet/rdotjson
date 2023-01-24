@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kawanet/rdotjson.svg?branch=master)](https://travis-ci.org/kawanet/rdotjson) [![npm version](https://badge.fury.io/js/rdotjson.svg)](https://badge.fury.io/js/rdotjson)
 
-Android String Resource XML Parser
+Android String Resource XML `strings.xml` Parser
 
 ## SYNOPSIS
 
@@ -164,7 +164,7 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 Yusuke Kawasaki
+Copyright (c) 2016-2023 Yusuke Kawasaki
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

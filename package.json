@@ -1,7 +1,7 @@
 {
   "name": "rdotjson",
-  "description": "Android String Resource XML Parser",
-  "version": "1.0.3",
+  "description": "Android String Resource XML (strings.xml) Parser",
+  "version": "1.0.4",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bin": {
     "rdotjson": "./rdotjson.cli.js"
@@ -22,6 +22,12 @@
     "jshint": "^2.13.6",
     "mocha": "^10.2.0"
   },
+  "files": [
+    "*.js",
+    "format",
+    "gist",
+    "lib"
+  ],
   "homepage": "https://github.com/kawanet/rdotjson#readme",
   "jshintConfig": {
     "eqnull": true,
@@ -46,6 +52,7 @@
     "fixpack": "fixpack",
     "jshint": "./node_modules/.bin/jshint *.js *.json format/*.js gist/*.js lib/*.js test/*.js",
     "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
+    "prepack": "npm test",
     "test": "npm run jshint && npm run mocha"
   }
 }

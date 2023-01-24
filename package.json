@@ -14,13 +14,13 @@
     "Adriano Raiano <adriano@raiano.ch>"
   ],
   "dependencies": {
-    "cheerio": "^0.22.0",
+    "cheerio": "^1.0.0-rc.12",
     "is-stream": "^2.0.0",
-    "process.argv": "^0.1.0"
+    "process.argv": "^0.6.0"
   },
   "devDependencies": {
-    "jshint": "^2.10.2",
-    "mocha": "^6.1.4"
+    "jshint": "^2.13.6",
+    "mocha": "^10.2.0"
   },
   "homepage": "https://github.com/kawanet/rdotjson#readme",
   "jshintConfig": {

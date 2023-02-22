@@ -33,7 +33,9 @@
     "eqnull": true,
     "esversion": 6,
     "node": true,
-    "undef": true
+    "undef": true,
+    "unused": true,
+    "varstmt": true
   },
   "keywords": [
     "Android",

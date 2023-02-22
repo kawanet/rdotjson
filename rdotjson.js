@@ -6,8 +6,8 @@ const {getString} = require("./lib/get-string");
 const readFromStream = require("./gist/read-from-stream");
 const regexpForWildcard = require("./gist/regexp-for-wildcard");
 
-var exports = module.exports = rtojson;
-exports.format = format;
+const _exports = module.exports = rtojson;
+_exports.format = format;
 
 const typeFilter = {
   "integer-array": Math.round,

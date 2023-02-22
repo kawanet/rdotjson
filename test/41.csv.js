@@ -1,6 +1,6 @@
 #!/usr/bin/env mocha -R spec
 
-const assert = require("assert");
+const assert = require("assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
@@ -43,7 +43,7 @@ function checkAsString(R) {
   assert.equal(R.integer.max_speed + "", "75");
   assert.equal(R.string.app_name + "", "MyApp");
   assert.equal(R.string.action_settings + "", "Settings");
-  assert.equal(R.array.bits[0] + "", 4);
+  assert.equal(R.array.bits[0] + "", "4");
   assert.equal(R.array.planets_array[0] + "", "Mercury");
 }
 

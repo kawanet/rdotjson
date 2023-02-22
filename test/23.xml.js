@@ -1,6 +1,6 @@
 #!/usr/bin/env mocha -R spec
 
-const assert = require("assert");
+const assert = require("assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
@@ -69,10 +69,10 @@ describe(TITLE, function() {
       assert.ok(R);
       assert.ok(R.string);
 
-      assert.equal(R.string.default_latitude, '40.7831');
-      assert.equal(R.string.default_longitude.attr.translatable, 'false');
-      assert.equal(R.string.default_latitude, '40.7831');
-      assert.equal(R.string.default_longitude.attr.translatable, 'false');
+      assert.equal(String(R.string.default_latitude), '40.7831');
+      assert.equal(String(R.string.default_longitude.attr.translatable), 'false');
+      assert.equal(String(R.string.default_latitude), '40.7831');
+      assert.equal(String(R.string.default_longitude.attr.translatable), 'false');
 
       done();
     });

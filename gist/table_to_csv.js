@@ -8,7 +8,7 @@
  */
 
 function table_to_csv(table) {
-  var buf = table.map(function(row) {
+  const buf = table.map(function(row) {
     row = row.map(function(str) {
       if (str == null) {
         str = "";

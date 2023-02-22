@@ -1,14 +1,14 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert");
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var xml;
+  let xml;
 
   it("values.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
@@ -21,13 +21,13 @@ describe(TITLE, function() {
       assert.ok(!err, err);
       checkAsString(R);
 
-      var format = rdotjson.format('csv');
+      const format = rdotjson.format('csv');
       assert.ok(format);
 
-      var csv = format(R);
+      const csv = format(R);
       assert.ok(csv);
 
-      var RR = parseCSV(csv);
+      const RR = parseCSV(csv);
       checkAsString(RR);
 
       done();
@@ -55,12 +55,12 @@ function parseCSV(csv) {
   return csv.split(/[\r\n]+/).reduce(reduce, {});
 
   function reduce(R, row) {
-    var col = row.split(",");
-    var type = col[0];
-    var name = col[1];
-    var group = R[type] || (R[type] = {});
+    const col = row.split(",");
+    const type = col[0];
+    const name = col[1];
+    const group = R[type] || (R[type] = {});
     if (type === "array") {
-      var array = group[name] || (group[name] = []);
+      const array = group[name] || (group[name] = []);
       array.push(col[2]);
     } else {
       group[name] = col[2];

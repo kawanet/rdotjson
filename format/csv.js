@@ -2,7 +2,7 @@
 
 exports.format = csv;
 
-var table_to_csv = require("../gist/table_to_csv");
+const table_to_csv = require("../gist/table_to_csv");
 
 /**
  * Format as CSV
@@ -15,25 +15,25 @@ var table_to_csv = require("../gist/table_to_csv");
 function csv(R, options) {
   if (!options) options = {};
 
-  var sortRows = !options.comment;
-  var objectMode = options.objectMode;
+  const sortRows = !options.comment;
+  const objectMode = options.objectMode;
 
-  var rows = [];
+  const rows = [];
 
   getKeys(R).forEach(function(type) {
     getKeys(R[type]).forEach(function(key) {
-      var val = R[type][key];
-      var comment = val && val.comment;
+      const val = R[type][key];
+      const comment = val && val.comment;
 
       if (val instanceof Array) {
         val.forEach(function(item) {
-          var row = [type, key, getValue(item)];
-          var cmt = item && item.comment || comment;
+          const row = [type, key, getValue(item)];
+          const cmt = item && item.comment || comment;
           if (cmt) row.push(cmt);
           rows.push(row);
         });
       } else {
-        var row = [type, key, getValue(val)];
+        const row = [type, key, getValue(val)];
         if (comment) row.push(comment);
         rows.push(row);
       }
@@ -44,7 +44,7 @@ function csv(R, options) {
 
   // don't sort rows when {comment: true}
   function getKeys(hash) {
-    var array = Object.keys(hash);
+    const array = Object.keys(hash);
     return sortRows ? array : array.sort();
   }
 

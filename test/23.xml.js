@@ -1,14 +1,14 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert");
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var xml;
+  let xml;
 
   /**
    * @see https://github.com/kawanet/rdotjson/issues/2

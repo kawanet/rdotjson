@@ -1,6 +1,6 @@
 /**
  * Read all data from stream
- * 
+ *
  * @param stream {Stream}
  * @param callback {Function} function(err, str) {...}
  * @license MIT
@@ -8,7 +8,7 @@
  */
 
 function readFromStream(stream, callback) {
-  var buf = [];
+  const buf = [];
   stream.on("data", onData);
   stream.on("end", onEnd);
   stream.on("error", onError);

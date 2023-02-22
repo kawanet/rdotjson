@@ -1,15 +1,15 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert");
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var colors, dimens, strings;
-  var RR = {};
+  let colors, dimens, strings;
+  const RR = {};
 
   it("colors.xml", function(done) {
     colors = fs.readFileSync(__dirname + "/values/colors.xml");
@@ -53,13 +53,13 @@ describe(TITLE, function() {
   });
 
   it("{R: {}}", function(done) {
-    var option = {R: RR};
-    var source = [colors, dimens, strings];
+    const option = {R: RR};
+    const source = [colors, dimens, strings];
     next();
 
     function next(err, R) {
       assert.ok(!err, err);
-      var xml = source.shift();
+      const xml = source.shift();
       if (!xml) return checkAll(R, done);
       rdotjson(xml, option, next);
     }

@@ -1,14 +1,14 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert");
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var xml;
+  let xml;
 
   it("values.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
@@ -21,13 +21,13 @@ describe(TITLE, function() {
       assert.ok(!err, err);
       checkAsString(R);
 
-      var format = rdotjson.format('json');
+      const format = rdotjson.format('json');
       assert.ok(format);
 
-      var json = format(R);
+      const json = format(R);
       assert.ok(json);
 
-      var RR = JSON.parse(json);
+      const RR = JSON.parse(json);
       checkAsString(RR);
 
       done();

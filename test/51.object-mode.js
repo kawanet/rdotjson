@@ -1,14 +1,14 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert");
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var xml;
+  let xml;
 
   it("values.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
@@ -18,7 +18,7 @@ describe(TITLE, function() {
 
   it("{objectMode: false}", function(done) {
     // this uses primitive wrapper object tricks such as String()
-    var options = {objectMode: false, attr: true, comment: "right"};
+    const options = {objectMode: false, attr: true, comment: "right"};
 
     rdotjson(xml, options, function(err, R) {
       assert.ok(!err, err);
@@ -28,13 +28,13 @@ describe(TITLE, function() {
       checkAttrProp(R);
       checkCommentProp(R);
 
-      var J = roundtripJSON(R, options);
+      const J = roundtripJSON(R, options);
       checkAsString(J);
       // checkValueProp(J);
       // checkAttrProp(J);
       // checkCommentProp(J);
 
-      var C = roundtripCSV(R, options);
+      const C = roundtripCSV(R, options);
       checkAsString(C);
 
       done();
@@ -44,7 +44,7 @@ describe(TITLE, function() {
   it("{objectMode: true}", function(done) {
 
     // this uses plain object wrapper such as {value: value}
-    var options = {objectMode: true, attr: true, comment: "right"};
+    const options = {objectMode: true, attr: true, comment: "right"};
 
     rdotjson(xml, options, function(err, R) {
       assert.ok(!err, err);
@@ -54,13 +54,13 @@ describe(TITLE, function() {
       checkAttrProp(R);
       checkCommentProp(R);
 
-      var J = roundtripJSON(R, options);
+      const J = roundtripJSON(R, options);
       // checkAsString(J);
       checkValueProp(J);
       checkAttrProp(J);
       checkCommentProp(J);
 
-      var C = roundtripCSV(R, options);
+      const C = roundtripCSV(R, options);
       checkAsString(C);
 
       done();
@@ -106,14 +106,14 @@ function checkAttrProp(R) {
 }
 
 function roundtripJSON(R, options) {
-  var format = rdotjson.format("json");
-  var json = format(R, options);
+  const format = rdotjson.format("json");
+  const json = format(R, options);
   return JSON.parse(json);
 }
 
 function roundtripCSV(R, options) {
-  var format = rdotjson.format("csv");
-  var csv = format(R, options);
+  const format = rdotjson.format("csv");
+  const csv = format(R, options);
   return parseCSV(csv);
 }
 
@@ -125,12 +125,12 @@ function parseCSV(csv) {
   return csv.split(/[\r\n]+/).reduce(reduce, {});
 
   function reduce(R, row) {
-    var col = row.split(",");
-    var type = col[0];
-    var name = col[1];
-    var group = R[type] || (R[type] = {});
+    const col = row.split(",");
+    const type = col[0];
+    const name = col[1];
+    const group = R[type] || (R[type] = {});
     if (type === "array") {
-      var array = group[name] || (group[name] = []);
+      const array = group[name] || (group[name] = []);
       array.push(col[2]);
     } else {
       group[name] = col[2];

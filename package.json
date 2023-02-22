@@ -30,6 +30,7 @@
   ],
   "homepage": "https://github.com/kawanet/rdotjson#readme",
   "jshintConfig": {
+    "eqeqeq": true,
     "eqnull": true,
     "esversion": 6,
     "node": true,
@@ -53,7 +54,7 @@
   },
   "scripts": {
     "fixpack": "fixpack",
-    "jshint": "./node_modules/.bin/jshint *.js *.json format/*.js gist/*.js lib/*.js test/*.js",
+    "jshint": "./node_modules/.bin/jshint .",
     "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
     "prepack": "npm test",
     "test": "npm run jshint && npm run mocha"

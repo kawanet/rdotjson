@@ -8,11 +8,19 @@ Android String Resource XML `strings.xml` Parser
 ## SYNOPSIS
 
 ```js
+import {promises as fs} from "fs";
+import rdotjson from "rdotjson";
+
+const xml = await fs.readFile("strings.xml");
+const R = await rdotjson(xml);
+console.log(R.string.app_name); // => "MyApp"
+```
+
+```js
 const fs = require("fs");
 const rdotjson = require("rdotjson");
 
 const xml = fs.readFileSync("strings.xml");
-
 rdotjson(xml, function(err, R) {
   if (err) throw err;
   console.log(R.string.app_name); // => "MyApp"
@@ -93,7 +101,7 @@ rdotjson(xml, {objectMode: true}, function(err, R) {
 
 ## FORMATTERS
 
-Emebed formatters `json` and `csv` available. 
+Embedded formatters `json` and `csv` available. 
 
 ### JSON Formatter
 

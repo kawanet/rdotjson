@@ -20,13 +20,19 @@ const typeFilter = {
  *
  * @param xml {String|Buffer|Stream}
  * @param [options] {Object}
- * @param callback {Function} function(err, R) {...}
+ * @param [callback] {Function} function(err, R) {...}
  */
 
 function rtojson(xml, options, callback) {
   if (options instanceof Function && callback == null) {
     callback = options;
     options = null;
+  }
+
+  if (!callback) {
+    return new Promise((resolve, reject) => {
+      rtojson(xml, options, (err, R) => err ? reject(err) : resolve(R));
+    });
   }
 
   if (!options) options = {};

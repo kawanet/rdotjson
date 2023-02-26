@@ -24,7 +24,8 @@ describe(TITLE, () => {
   it("stream error", (done) => {
     const stream = new Readable({
       read() {
-        throw new Error("Something wrong");
+        // https://nodejs.org/api/stream.html#errors-while-reading
+        this.destroy(new Error("Something wrong"));
       }
     });
     rdotjson(stream, (err) => {

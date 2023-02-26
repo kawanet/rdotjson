@@ -1,14 +1,14 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert").strict;
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var xml;
+  let xml;
 
   /**
    * @see https://github.com/kawanet/rdotjson/issues/2
@@ -69,10 +69,10 @@ describe(TITLE, function() {
       assert.ok(R);
       assert.ok(R.string);
 
-      assert.equal(R.string.default_latitude, '40.7831');
-      assert.equal(R.string.default_longitude.attr.translatable, 'false');
-      assert.equal(R.string.default_latitude, '40.7831');
-      assert.equal(R.string.default_longitude.attr.translatable, 'false');
+      assert.equal(String(R.string.default_latitude), '40.7831');
+      assert.equal(String(R.string.default_longitude.attr.translatable), 'false');
+      assert.equal(String(R.string.default_latitude), '40.7831');
+      assert.equal(String(R.string.default_longitude.attr.translatable), 'false');
 
       done();
     });

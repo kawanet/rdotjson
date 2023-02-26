@@ -1,15 +1,15 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert").strict;
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
   it("string-space.xml", function(done) {
-    var xml = fs.readFileSync(__dirname + "/values/string-space.xml");
+    const xml = fs.readFileSync(__dirname + "/values/string-space.xml");
     assert.ok(xml);
     rdotjson(xml, function(err, R) {
       assert.ok(!err, err);

@@ -1,15 +1,15 @@
 // rtojson.js
 
-var cheerio = require("cheerio");
-var isReadableStream = require("is-stream").readable;
-var getString = require("./lib/get-string").getString;
-var readFromStream = require("./gist/read-from-stream");
-var regexpForWildcard = require("./gist/regexp-for-wildcard");
+const cheerio = require("cheerio");
+const isReadableStream = require("is-stream").readable;
+const {getString} = require("./lib/get-string");
+const readFromStream = require("./gist/read-from-stream");
+const regexpForWildcard = require("./gist/regexp-for-wildcard");
 
-var exports = module.exports = rtojson;
-exports.format = format;
+const _exports = module.exports = rtojson;
+_exports.format = format;
 
-var typeFilter = {
+const typeFilter = {
   "integer-array": Math.round,
   bool: isTrue,
   integer: Math.round
@@ -20,13 +20,19 @@ var typeFilter = {
  *
  * @param xml {String|Buffer|Stream}
  * @param [options] {Object}
- * @param callback {Function} function(err, R) {...}
+ * @param [callback] {Function} function(err, R) {...}
  */
 
 function rtojson(xml, options, callback) {
   if (options instanceof Function && callback == null) {
     callback = options;
     options = null;
+  }
+
+  if (!callback) {
+    return new Promise((resolve, reject) => {
+      rtojson(xml, options, (err, R) => err ? reject(err) : resolve(R));
+    });
   }
 
   if (!options) options = {};
@@ -41,35 +47,35 @@ function rtojson(xml, options, callback) {
     });
   }
 
-  var exclude = options.exclude && regexpForWildcard(options.exclude);
+  const exclude = options.exclude && regexpForWildcard(options.exclude);
 
-  var $ = cheerio.load(xml, {
+  const $ = cheerio.load(xml, {
     normalizeWhitespace: false,
     xmlMode: true
   });
 
-  var R = options.R || {};
+  const R = options.R || {};
   // prepositive XML comments
-  var preComments = (options.comment === "pre");
+  const preComments = (options.comment === "pre");
   // postpositive XML comments
-  var postComments = (options.comment === "post");
+  const postComments = (options.comment === "post");
   // right-side XML comment within the same line
-  var rightComment = (options.comment === "right");
+  const rightComment = (options.comment === "right");
 
-  var includeComments = preComments || postComments || rightComment;
-  var type;
-  var hash;
-  var name;
+  const includeComments = preComments || postComments || rightComment;
+  let type;
+  let hash;
+  let name;
 
   [].forEach.call($("resources"), function(resources) {
-    var childNodes = resources && resources.childNodes;
+    const childNodes = resources && resources.childNodes;
     if (!childNodes) return;
 
-    var comments;
+    let comments;
 
     [].forEach.call(childNodes, function(e) {
       if (includeComments && e.type === "comment") {
-        var comment = e.data.trim();
+        const comment = e.data.trim();
         if (!preComments && hash && name) {
           // right or post comments
           appendComment(comment);
@@ -112,8 +118,8 @@ function rtojson(xml, options, callback) {
     type = item.name;
     if (!type) return;
 
-    var group = type;
-    var array = type.match(/-array$/);
+    let group = type;
+    const array = type.match(/-array$/);
     if (array) {
       group = "array";
     }
@@ -124,7 +130,7 @@ function rtojson(xml, options, callback) {
 
     hash = R[group] || (R[group] = {});
 
-    var val;
+    let val;
     if (array) {
       val = [];
       if (!item.childNodes) return;
@@ -140,13 +146,13 @@ function rtojson(xml, options, callback) {
   }
 
   function getValue(item) {
-    var val;
+    let val;
 
     if (options.xml) {
       val = $(item).html();
     } else {
       val = getString(item);
-      var filter = typeFilter[type];
+      const filter = typeFilter[type];
       if (filter) val = filter(val);
     }
 
@@ -170,7 +176,7 @@ function rtojson(xml, options, callback) {
 function addComment(val, comment) {
   val = new Object(val);
 
-  var prev = val.comment;
+  const prev = val.comment;
   if (prev instanceof Array) {
     prev.push(comment);
   } else if ("string" === typeof prev) {
@@ -203,7 +209,7 @@ function isTrue(val) {
  */
 
 function format(name) {
-  var func;
+  let func;
   try {
     func = require("./format/" + name).format;
   } catch (e) {

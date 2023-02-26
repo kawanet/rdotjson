@@ -1,16 +1,16 @@
 #!/usr/bin/env mocha -R spec
 
-var assert = require("assert");
-var fs = require("fs");
-var rdotjson = require("../rdotjson");
-var TITLE = __filename.replace(/^.*\//, "") + ":";
+const assert = require("assert").strict;
+const fs = require("fs");
+const rdotjson = require("../rdotjson");
+const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 /* jshint mocha:true */
 
 describe(TITLE, function() {
-  var xml;
-  var jsonFormat;
-  var jsonString;
+  let xml;
+  let jsonFormat;
+  let jsonString;
 
   it("values.xml", function(done) {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
@@ -27,7 +27,7 @@ describe(TITLE, function() {
       jsonString = jsonFormat(R);
       assert.ok(jsonString);
 
-      var C = getCSVRow(R, 3);
+      const C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true');
       assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false');
 
@@ -52,7 +52,7 @@ describe(TITLE, function() {
       assert.equal(R.array.bits.comment + "", "between array");
       assert.equal(R.array.planets_array.comment + "", "after array");
 
-      var C = getCSVRow(R, 3);
+      const C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true,"before bool,between bool"');
       assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false,"after bool,before color"');
 
@@ -77,7 +77,7 @@ describe(TITLE, function() {
       assert.equal(R.array.bits.comment + "", "after string,before array");
       assert.equal(R.array.planets_array.comment + "", "between array,after array");
 
-      var C = getCSVRow(R, 3);
+      const C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true,before bool');
       assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false,between bool');
 
@@ -93,15 +93,15 @@ describe(TITLE, function() {
       assert.equal(jsonFormat(R), jsonString);
 
       assert.equal(R.bool.screen_small.comment, "between bool");
-      assert.equal(R.bool.adjust_view_bounds.comment, null);
+      assert.equal(R.bool.adjust_view_bounds.comment, undefined);
 
       assert.equal(R.string.app_name.comment, "between string");
-      assert.equal(R.string.action_settings.comment, null);
+      assert.equal(R.string.action_settings.comment, undefined);
 
       assert.equal(R.array.bits.comment, "between array");
-      assert.equal(R.array.planets_array.comment, null);
+      assert.equal(R.array.planets_array.comment, undefined);
 
-      var C = getCSVRow(R, 3);
+      const C = getCSVRow(R, 3);
       assert.equal(C.bool.screen_small, 'bool,screen_small,true,between bool');
       assert.equal(C.bool.adjust_view_bounds, 'bool,adjust_view_bounds,false');
 
@@ -119,23 +119,23 @@ function checkAll(R) {
   assert.ok(R.integer);
   assert.ok(R.string);
 
-  assert.equal(R.bool.screen_small, true);
-  assert.equal(R.bool.adjust_view_bounds, false);
-  assert.equal(R.color.colorPrimary + "", "#3F51B5");
-  assert.equal(R.dimen.activity_horizontal_margin, "16dp");
-  assert.equal(R.integer.max_speed, 75);
-  assert.equal(R.string.app_name, "MyApp");
+  assert.equal(Boolean(+R.bool.screen_small), true);
+  assert.equal(Boolean(+R.bool.adjust_view_bounds), false);
+  assert.equal(String(R.color.colorPrimary), "#3F51B5");
+  assert.equal(String(R.dimen.activity_horizontal_margin), "16dp");
+  assert.equal(Number(R.integer.max_speed), 75);
+  assert.equal(String(R.string.app_name), "MyApp");
 }
 
 function getCSVRow(C) {
-  var format = rdotjson.format("csv");
-  var csv = format(C);
+  const format = rdotjson.format("csv");
+  const csv = format(C);
   return csv.split(/[\r\n]+/).reduce(reduce, {});
 
   function reduce(R, row) {
-    var col = row.split(",");
-    var type = col[0];
-    var group = R[type] || (R[type] = {});
+    const col = row.split(",");
+    const type = col[0];
+    const group = R[type] || (R[type] = {});
     group[col[1]] = row;
     return R;
   }

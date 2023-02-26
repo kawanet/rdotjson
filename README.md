@@ -8,18 +8,29 @@ Android String Resource XML `strings.xml` Parser
 ## SYNOPSIS
 
 ```js
+import {promises as fs} from "fs";
+import rdotjson from "rdotjson";
+
+const xml = await fs.readFile("strings.xml");
+const R = await rdotjson(xml);
+console.log(R.string.app_name); // => "MyApp"
+```
+
+### Callback Style
+
+```js
 const fs = require("fs");
 const rdotjson = require("rdotjson");
 
 const xml = fs.readFileSync("strings.xml");
 
-rdotjson(xml, function(err, R) {
+rdotjson(xml, (err, R) => {
   if (err) throw err;
   console.log(R.string.app_name); // => "MyApp"
 });
 ```
 
-### XML
+### XML Input
 
 ```xml
 <resources>
@@ -28,7 +39,7 @@ rdotjson(xml, function(err, R) {
 </resources>
 ```
 
-### JSON
+### JSON Output
 
 ```json
 {
@@ -71,11 +82,9 @@ rdotjson(xml, options, callback);
 ### Object Mode
 
 ```js
-rdotjson(xml, {objectMode: true}, function(err, R) {
-  if (err) throw err;
-  console.log(R.string.app_name.value); // => "MyApp"
-  console.log(JSON.stringify(R, null, 2));
-});
+const R = await rdotjson(xml, {objectMode: true});
+console.log(R.string.app_name.value); // => "MyApp"
+console.log(JSON.stringify(R, null, 2));
 ```
 
 ```json
@@ -93,31 +102,27 @@ rdotjson(xml, {objectMode: true}, function(err, R) {
 
 ## FORMATTERS
 
-Emebed formatters `json` and `csv` available. 
+Bundled formatters `json` and `csv` available.
 
 ### JSON Formatter
 
 ```js
-rdotjson(xml, function(err, R) {
-  if (err) throw err;
-  const format = rdotjson.format("json");
-  const json = format(R, {space: 0});
-  console.log(json);
-  // => {"string":{"app_name":"MyApp","action_settings":"Settings"}}
-});
+const R = await rdotjson(xml);
+const format = rdotjson.format("json");
+const json = format(R, {space: 0});
+console.log(json);
+// => {"string":{"app_name":"MyApp","action_settings":"Settings"}}
 ```
 
 ### CSV Formatter
 
 ```js
-rdotjson(xml, function(err, R) {
-  if (err) throw err;
-  const format = rdotjson.format("csv");
-  const csv = format(R);
-  console.log(csv);
-  // => string,action_settings,Settings
-  //    string,app_name,MyApp
-});
+const R = await rdotjson(xml);
+const format = rdotjson.format("csv");
+const csv = format(R);
+console.log(csv);
+// => string,action_settings,Settings
+//    string,app_name,MyApp
 ```
 
 ## CLI
@@ -141,7 +146,7 @@ rdotjson app/src/main/res/values/strings.xml --format=csv > strings.csv
 - `--comment=right` - include right-side XML comment within the same line
 - `--exclude='*_android'` - specify key names to exclude. Wildcard available.
 - `--format=json` - specify output format. default: `json`
-- `--objectMode` - use a plain object container `{value: value}` instead of primitives 
+- `--objectMode` - use a plain object container `{value: value}` instead of primitives
 - `--output=R.json` - output filename. default: `STDOUT`
 - `--space=2` - JSON indent. default: 2
 - `--version` - show rdotjson version.

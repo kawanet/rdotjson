@@ -12,6 +12,6 @@ exports.format = json;
 
 function json(R, options) {
   if (!options) options = {};
-  var space = (options.space == null) ? "  " : options.space;
+  const space = (options.space == null) ? "  " : options.space;
   return JSON.stringify(R, null, space);
 }

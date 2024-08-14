@@ -1,7 +1,7 @@
 {
   "name": "rdotjson",
   "description": "Android String Resource XML (strings.xml) Parser",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "Yusuke Kawasaki <u-suke@kawa.net>",
   "bin": {
     "rdotjson": "./rdotjson.cli.js"
@@ -14,7 +14,7 @@
     "Adriano Raiano <adriano@raiano.ch>"
   ],
   "dependencies": {
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "1.0.0-rc.12",
     "is-stream": "^2.0.0",
     "process.argv": "^0.6.1"
   },

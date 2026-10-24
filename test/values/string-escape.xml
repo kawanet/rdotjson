@@ -5,4 +5,7 @@
     <string name="good_example_3">This is a \"good string\".</string>
     <string name="bad_example_1">This is a "bad string".</string>
     <string name="new_line">foo\nbar</string>
+    <string name="tab">foo\tbar</string>
+    <string name="unicode">Star \u2605</string>
+    <string name="escaped_backslash">C:\\u2605</string>
 </resources>

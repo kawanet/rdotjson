@@ -34,6 +34,8 @@ describe(TITLE, function() {
 
       assert.equal(esc(R.string.indented_lines_with_quote), esc("FOO\n\n........BAR\n"), "indented_lines_with_quote");
 
+      assert.equal(R.string.non_breaking_space, "10\u00a0km", "non_breaking_space");
+
       done();
     });
   });

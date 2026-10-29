@@ -48,4 +48,5 @@ BAR\n"
         "FOO\n
         BAR\n"
     </string> <!-- "FOO\n\n........BAR\n" -->
+    <string name="non_breaking_space">10 km</string> <!-- a non-breaking space is not folded -->
 </resources>

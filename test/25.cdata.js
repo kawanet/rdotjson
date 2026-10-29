@@ -30,6 +30,7 @@ describe(TITLE, function() {
       assert.equal(esc(R.string.cdata_with_escaped_newline), '\nFOO..BAR\n');
       assert.equal(esc(R.string.string_with_tag), '.FOO..BAR..BUZ.');
       assert.equal(esc(R.string.cdata_with_tag), 'FOO..<b>..BAR..</b>..BUZ');
+      assert.equal(R.string.cdata_with_escaped_tab_and_unicode, 'FOO\tBAR \u2605 C:\\u2605');
       assert.equal(esc(R.string.string_with_tag_in_quote), '.[...FOO.BAR..]..');
       assert.equal(esc(R.string.string_with_quote_in_tag), '..[..FOO..BAR..]..');
 

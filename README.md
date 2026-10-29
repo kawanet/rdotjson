@@ -1,7 +1,7 @@
 # rdotjson
 
-[![Node.js CI](https://github.com/kawanet/rdotjson/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/kawanet/rdotjson/actions/)
-[![npm version](https://badge.fury.io/js/rdotjson.svg)](https://badge.fury.io/js/rdotjson)
+[![Node.js CI](https://github.com/kawanet/rdotjson/workflows/Node.js%20CI/badge.svg?branch=main)](https://github.com/kawanet/rdotjson/actions/)
+[![npm version](https://img.shields.io/npm/v/rdotjson)](https://www.npmjs.com/package/rdotjson)
 
 Android String Resource XML `strings.xml` Parser
 

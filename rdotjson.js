@@ -1,6 +1,6 @@
 // rtojson.js
 
-const cheerio = require("cheerio");
+const {parseDocument, DomUtils} = require("htmlparser2");
 const isReadableStream = require("is-stream").readable;
 const {getString} = require("./lib/get-string");
 const readFromStream = require("./gist/read-from-stream");
@@ -49,10 +49,8 @@ function rtojson(xml, options, callback) {
 
   const exclude = options.exclude && regexpForWildcard(options.exclude);
 
-  const $ = cheerio.load(xml, {
-    normalizeWhitespace: false,
-    xmlMode: true
-  });
+  // htmlparser2 accepts a string only. Buffer input is decoded as UTF-8.
+  const dom = parseDocument(String(xml), {xmlMode: true});
 
   const R = options.R || {};
   // prepositive XML comments
@@ -67,7 +65,7 @@ function rtojson(xml, options, callback) {
   let hash;
   let name;
 
-  [].forEach.call($("resources"), function(resources) {
+  DomUtils.getElementsByTagName("resources", dom, true).forEach(function(resources) {
     const childNodes = resources && resources.childNodes;
     if (!childNodes) return;
 
@@ -124,7 +122,7 @@ function rtojson(xml, options, callback) {
       group = "array";
     }
 
-    name = $(item).attr("name");
+    name = item.attribs.name;
 
     if (exclude && name.match(exclude)) return;
 
@@ -149,7 +147,8 @@ function rtojson(xml, options, callback) {
     let val;
 
     if (options.xml) {
-      val = $(item).html();
+      // keep the inner XML as-is, e.g. <b> tags and CDATA sections
+      val = DomUtils.getInnerHTML(item, {xmlMode: true});
     } else {
       val = getString(item);
       const filter = typeFilter[type];
@@ -161,7 +160,7 @@ function rtojson(xml, options, callback) {
     }
 
     if (options.attr) {
-      val = addAttributes(val, $(item).attr());
+      val = addAttributes(val, item.attribs);
     }
 
     return val;

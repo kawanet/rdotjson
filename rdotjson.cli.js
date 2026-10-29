@@ -46,6 +46,8 @@ function main() {
     console.warn("writing: " + (isSTDOUT ? "(stdout)" : output));
     const out = isSTDOUT ? process.stdout : fs.createWriteStream(output);
     const format = rdotjson.format(options.format || "json");
+    // Every CLI value arrives as a string, and JSON.stringify indents with a string as is.
+    if (/^\d+$/.test(options.space)) options.space = +options.space;
     out.write(format(R, options));
     if (!isSTDOUT) out.end();
   }

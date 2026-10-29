@@ -124,6 +124,9 @@ function rtojson(xml, options, callback) {
 
     name = item.attribs.name;
 
+    // Android requires the name attribute. An element without it has no key to store the value.
+    if (name == null) return;
+
     if (exclude && name.match(exclude)) return;
 
     hash = R[group] || (R[group] = {});

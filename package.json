@@ -19,8 +19,7 @@
     "process.argv": "^1.0.0"
   },
   "devDependencies": {
-    "jshint": "^2.13.6",
-    "mocha": "^10.7.3"
+    "jshint": "^2.13.6"
   },
   "devEngines": {
     "runtime": {
@@ -65,8 +64,7 @@
   "scripts": {
     "fixpack": "fixpack",
     "jshint": "./node_modules/.bin/jshint .",
-    "mocha": "./node_modules/.bin/mocha -R spec test/*.js",
     "prepack": "npm test",
-    "test": "npm run jshint && npm run mocha"
+    "test": "npm run jshint && node --test test/*.js"
   }
 }

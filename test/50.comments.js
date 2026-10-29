@@ -1,24 +1,21 @@
-#!/usr/bin/env mocha -R spec
-
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
-
-/* jshint mocha:true */
 
 describe(TITLE, function() {
   let xml;
   let jsonFormat;
   let jsonString;
 
-  it("values.xml", function(done) {
+  it("values.xml", function() {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
     assert.ok(xml);
-    done();
   });
 
-  it("{comment: null}", function(done) {
+  it("{comment: null}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {comment: null}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
@@ -33,9 +30,10 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 
-  it("{comment: 'post'}", function(done) {
+  it("{comment: 'post'}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {comment: 'post'}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
@@ -58,9 +56,10 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 
-  it("{comment: 'pre'}", function(done) {
+  it("{comment: 'pre'}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {comment: 'pre'}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
@@ -83,9 +82,10 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 
-  it("{comment: 'right'}", function(done) {
+  it("{comment: 'right'}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {comment: 'right'}, function(err, R) {
       assert.ok(!err, err);
       checkAll(R);
@@ -107,7 +107,7 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 });
 
 function checkAll(R) {

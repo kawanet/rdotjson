@@ -1,22 +1,19 @@
-#!/usr/bin/env mocha -R spec
-
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
 
-/* jshint mocha:true */
-
 describe(TITLE, function() {
   let xml;
 
-  it("values.xml", function(done) {
+  it("values.xml", function() {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
     assert.ok(xml);
-    done();
   });
 
-  it("rdotjson.format('csv')", function(done) {
+  it("rdotjson.format('csv')", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, function(err, R) {
       assert.ok(!err, err);
       checkAsString(R);
@@ -32,7 +29,7 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 });
 
 function checkAsString(R) {

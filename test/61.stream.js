@@ -1,16 +1,15 @@
-#!/usr/bin/env mocha -R spec
-
-/* jshint mocha:true */
 /* jshint esversion:8 */
 
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const {Readable} = require("stream");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
 
 describe(TITLE, () => {
-  it("colors.xml", (done) => {
+  it("colors.xml", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     const colors = fs.createReadStream(__dirname + "/values/colors.xml");
     rdotjson(colors, (err, R) => {
       assert.ok(!err);
@@ -19,9 +18,10 @@ describe(TITLE, () => {
       assert.equal(R.color.colorAccent, "#FF4081");
       done();
     });
-  });
+  }));
 
-  it("stream error", (done) => {
+  it("stream error", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     const stream = new Readable({
       read() {
         // https://nodejs.org/api/stream.html#errors-while-reading
@@ -32,5 +32,5 @@ describe(TITLE, () => {
       assert.ok(err);
       done();
     });
-  });
+  }));
 });

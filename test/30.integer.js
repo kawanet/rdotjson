@@ -1,14 +1,12 @@
-#!/usr/bin/env mocha -R spec
-
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
 
-/* jshint mocha:true */
-
 describe(TITLE, function() {
-  it("integer.xml", function(done) {
+  it("integer.xml", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     const xml = fs.readFileSync(__dirname + "/values/integer.xml");
     assert.ok(xml);
     rdotjson(xml, function(err, R) {
@@ -21,9 +19,10 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 
-  it("integers.xml", function(done) {
+  it("integers.xml", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     const xml = fs.readFileSync(__dirname + "/values/integers.xml");
     assert.ok(xml);
     rdotjson(xml, function(err, R) {
@@ -39,5 +38,5 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 });

@@ -14,7 +14,7 @@
     "Adriano Raiano <adriano@raiano.ch>"
   ],
   "dependencies": {
-    "cheerio": "^1.2.0",
+    "htmlparser2": "^10.1.0",
     "is-stream": "^2.0.1",
     "process.argv": "^1.0.0"
   },

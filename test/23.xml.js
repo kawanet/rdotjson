@@ -1,11 +1,8 @@
-#!/usr/bin/env mocha -R spec
-
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
-
-/* jshint mocha:true */
 
 describe(TITLE, function() {
   let xml;
@@ -19,7 +16,8 @@ describe(TITLE, function() {
     assert.ok(xml);
   });
 
-  it("{xml: false}", function(done) {
+  it("{xml: false}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {xml: false}, function(err, R) {
       assert.ok(!err, err);
       assert.ok(R);
@@ -39,9 +37,10 @@ describe(TITLE, function() {
       assert.equal(R.string.permission_justification_required_warning, ' You have declined a required permission. Exiting. ');
       done();
     });
-  });
+  }));
 
-  it("{xml: true}", function(done) {
+  it("{xml: true}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {xml: true}, function(err, R) {
       assert.ok(!err, err);
       assert.ok(R);
@@ -61,9 +60,10 @@ describe(TITLE, function() {
       assert.equal(R.string.permission_justification_required_warning, '\n        <font color="#ff4343">You have declined a required permission. Exiting.</font>\n    ');
       done();
     });
-  });
+  }));
 
-  it("{attr: true}", function(done) {
+  it("{attr: true}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     rdotjson(xml, {attr: true}, function(err, R) {
       assert.ok(!err, err);
       assert.ok(R);
@@ -76,5 +76,5 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 });

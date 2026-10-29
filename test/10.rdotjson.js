@@ -1,17 +1,15 @@
-#!/usr/bin/env mocha -R spec
-
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
-
-/* jshint mocha:true */
 
 describe(TITLE, function() {
   let colors, dimens, strings;
   const RR = {};
 
-  it("colors.xml", function(done) {
+  it("colors.xml", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     colors = fs.readFileSync(__dirname + "/values/colors.xml");
     assert.ok(colors);
     rdotjson(colors, function(err, R) {
@@ -23,9 +21,10 @@ describe(TITLE, function() {
       assert.equal(R.color.colorAccent, "#FF4081");
       done();
     });
-  });
+  }));
 
-  it("dimens.xml", function(done) {
+  it("dimens.xml", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     dimens = fs.readFileSync(__dirname + "/values/dimens.xml");
     assert.ok(dimens);
     rdotjson(dimens, function(err, R) {
@@ -37,9 +36,10 @@ describe(TITLE, function() {
       assert.equal(R.dimen.fab_margin, "16dp");
       done();
     });
-  });
+  }));
 
-  it("strings.xml", function(done) {
+  it("strings.xml", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     strings = fs.readFileSync(__dirname + "/values/strings.xml");
     assert.ok(strings);
     rdotjson(strings, function(err, R) {
@@ -50,9 +50,10 @@ describe(TITLE, function() {
       assert.equal(R.string.action_settings, "Settings");
       done();
     });
-  });
+  }));
 
-  it("{R: {}}", function(done) {
+  it("{R: {}}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     const option = {R: RR};
     const source = [colors, dimens, strings];
     next();
@@ -63,7 +64,7 @@ describe(TITLE, function() {
       if (!xml) return checkAll(R, done);
       rdotjson(xml, option, next);
     }
-  });
+  }));
 });
 
 function checkAll(R, callback) {

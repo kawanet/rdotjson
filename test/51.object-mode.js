@@ -1,22 +1,19 @@
-#!/usr/bin/env mocha -R spec
-
-const assert = require("assert").strict;
+const {describe, it} = require("node:test");
+const assert = require("node:assert").strict;
 const fs = require("fs");
 const rdotjson = require("../rdotjson");
 const TITLE = __filename.replace(/^.*\//, "") + ":";
 
-/* jshint mocha:true */
-
 describe(TITLE, function() {
   let xml;
 
-  it("values.xml", function(done) {
+  it("values.xml", function() {
     xml = fs.readFileSync(__dirname + "/values/values.xml");
     assert.ok(xml);
-    done();
   });
 
-  it("{objectMode: false}", function(done) {
+  it("{objectMode: false}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
     // this uses primitive wrapper object tricks such as String()
     const options = {objectMode: false, attr: true, comment: "right"};
 
@@ -39,9 +36,10 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 
-  it("{objectMode: true}", function(done) {
+  it("{objectMode: true}", {timeout: 1000}, () => new Promise((resolve, reject) => {
+    const done = (err) => (err ? reject(err) : resolve());
 
     // this uses plain object wrapper such as {value: value}
     const options = {objectMode: true, attr: true, comment: "right"};
@@ -65,7 +63,7 @@ describe(TITLE, function() {
 
       done();
     });
-  });
+  }));
 });
 
 function checkAsString(R) {

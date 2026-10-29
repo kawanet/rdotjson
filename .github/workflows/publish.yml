@@ -48,7 +48,6 @@ jobs:
       contents: read
       id-token: write
     steps:
-      # Nothing is built, so the tag alone carries everything npm needs.
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
